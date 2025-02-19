@@ -5,7 +5,7 @@ export const getProductos = async () => {
     `${API_URL}/products?stock_status=instock&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
-    throw new Error("No se pudieron obtener los productos");
+    throw new Error("No se pudo obtener los productos");
   }
 
   const data = await response.json();
@@ -13,27 +13,6 @@ export const getProductos = async () => {
 };
 
 
-// export const getProducto = async (slug) => {
-  
-//   const response = await fetch(
-//     `${API_URL}/products?slug=${slug}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
-//   );
-//   if (!response.ok) {
-//     throw new Error("No se pudo obtener el producto");
-//   }
-
-//   const data = await response.json();
-//   return data[0];
-// }
-
-
-// // Obtener los detalles de las variaciones
-// export const variationDetails = await Promise.all(
-//   product.variations.map(async (variationId) => {
-//     const variationResponse = await fetch( `${API_URL}/products/${product.id}/variations/${variationId}`);
-//     return variationResponse.json();
-//   })
-// );
 
 export const getProducto = async (slug) => {
   
@@ -71,4 +50,17 @@ export const getProducto = async (slug) => {
   } else {
     throw new Error("Producto no encontrado");
   }
+}
+
+
+export const getProductosCategoria = async (slug) => {
+  const response = await fetch(
+    `${API_URL}/products?category=${slug}&stock_status=instock&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+  );
+  if (!response.ok) {
+    throw new Error("No se pudo obtener los productos de la categoría");
+  }
+
+  const data = await response.json();
+  return data;
 }

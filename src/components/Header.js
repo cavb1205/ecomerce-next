@@ -2,10 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Search from "./Search";
 
 export default function Header() {
   const pathname = usePathname();
-  
+
   const links = [
     { href: "/", label: "Inicio" },
     { href: "/tienda/productos", label: "Tienda" },
@@ -33,7 +34,9 @@ export default function Header() {
               <Link
                 href={href}
                 className={`${
-                  pathname === href ? `text-pink-400 font-bold` : `text-gray-500`
+                  pathname === href
+                    ? `text-pink-400 font-bold`
+                    : `text-gray-500`
                 } hover:text-pink-400 hover:scale-105 hover:font-bold inline-block`}
               >
                 {label}
@@ -41,6 +44,9 @@ export default function Header() {
             </li>
           ))}
         </ul>
+        <div className="text-xl font-semibold text-gray-500 ml-20"> 
+          <Search />
+        </div>
       </nav>
     </header>
   );

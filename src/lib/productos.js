@@ -1,8 +1,9 @@
 const { API_URL, CONSUMER_KEY, CONSUMER_SECRET } = process.env;
 
-export const getProductos = async () => {
+export const getProductos = async (search) => {
+  console.log("buscando...", search);
   const response = await fetch(
-    `${API_URL}/products?stock_status=instock&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?stock_status=instock&search=${search}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
     throw new Error("No se pudo obtener los productos");
@@ -12,6 +13,17 @@ export const getProductos = async () => {
   return data;
 };
 
+export const getSaleProductos = async () => {
+  const response = await fetch(
+    `${API_URL}/products?stock_status=instock&on_sale=true&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+  );
+  if (!response.ok) {
+    throw new Error("No se pudo obtener los productos");
+  }
+
+  const data = await response.json();
+  return data;
+};
 
 
 export const getProducto = async (slug) => {

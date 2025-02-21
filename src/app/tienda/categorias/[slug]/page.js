@@ -10,12 +10,12 @@ export default async function ProductsCategory({params}) {
         const {id, name, count } = categoria[0];
         const productos = await getProductosCategoria(id);
         
-        console.log(productos);
+        
         return (
             <section className="container mx-auto p-2">
                 <h1 className="text-pink-400 text-4xl text-center font-semibold ">Categoría {name}</h1>
                 <span className="text-gray-500 text-sm text-center block font-semibold">{count} productos</span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-2 my-2">
                     {productos.map((producto) => (
                         <ProductListItem key={producto.id} producto={producto} />
                     ))}

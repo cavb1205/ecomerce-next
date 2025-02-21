@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCategorias } from "@/lib/categorias";
 import ErrorMessage from "@/components/ErrorMessage";
+import Image from "next/image";
 
 export default async function Page() {
   try {
@@ -24,10 +25,20 @@ export default async function Page() {
                   href={`/tienda/categorias/${categoria.slug}`}
                   className="text-pink-400 font-semibold text-xl hover:text-pink-500"
                 >
+                  
                   <h5>{categoria.name}</h5>
                   <span className="text-gray-500 text-sm">
                     {categoria.count} productos
                   </span>
+                  {/* {categoria.image && (
+                    <Image
+                      src={categoria.image.src}
+                      alt={categoria.name}
+                      width={100}
+                      height={100}
+                    />
+                  )} */}
+                
                 </Link>
               </div>
             ))}

@@ -1,10 +1,12 @@
 import ProductListItem from "@/components/ProductListItem";
 import ErrorMessage from "@/components/ErrorMessage";
-import { getProducto, getProductos } from "@/lib/productos";
+import { getProductos } from "@/lib/productos";
 
 
 export default async function Productos({searchParams}) {
   try {
+    
+    // Acceder a searchParams de manera segura
     const search = searchParams?.search || "";
     const productos = await getProductos(search);
     

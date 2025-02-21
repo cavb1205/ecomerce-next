@@ -5,7 +5,16 @@ import { usePathname } from "next/navigation";
 
 export default function MenuCategory({ categorias }) {
   const path = usePathname();
-  
+  if (!categorias || categorias.length === 0) {
+    return (
+      <div className="animate-pulse space-y-4">
+        {/* Skeleton de categorías */}
+        <div className="h-8 bg-gray-300 rounded w-3/4 mb-2"></div>
+        <div className="h-8 bg-gray-300 rounded w-3/4 mb-2"></div>
+        <div className="h-8 bg-gray-300 rounded w-3/4 mb-2"></div>
+      </div>
+    );
+  }
 
   return (
     <>

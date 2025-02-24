@@ -1,22 +1,24 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
+import { use } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function Search() {
   const searchparams = useSearchParams();
-    const {replace} = useRouter();
-    const pathname = '/tienda/productos';
-    
-  const handleSearch = (term) => {
-    
+  const { replace } = useRouter();
+  const pathname = "/tienda/productos";
+  const TIME_BEFORE_SEARCH = 400;
+
+  const handleSearch = useDebouncedCallback((term) => {
     const params = new URLSearchParams(searchparams);
-    if (term){
-        params.set("search", term);
+    if (term) {
+      params.set("search", term);
+    } else {
+      params.delete("search");
     }
-    else{
-        params.delete("search");
-    }
-    replace(`${pathname}?${params.toString()}`);   
-  };
+    params.set("page", "1");
+    replace(`${pathname}?${params.toString()}`);
+  }, TIME_BEFORE_SEARCH);
   return (
     <div>
       <input

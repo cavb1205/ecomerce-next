@@ -1,15 +1,15 @@
 const { API_URL, CONSUMER_KEY, CONSUMER_SECRET } = process.env;
 
-export const getProductos = async (search) => {
-  console.log("buscando...", search);
+export const getProductos = async (search,page) => {
   const response = await fetch(
-    `${API_URL}/products?stock_status=instock&search=${search}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?stock_status=instock&search=${search}&page=${page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
     throw new Error("No se pudo obtener los productos");
   }
 
   const data = await response.json();
+   
   return data;
 };
 
@@ -25,21 +25,18 @@ export const getSaleProductos = async () => {
   return data;
 };
 
-
 export const getProducto = async (slug) => {
-  
-  
   // Obtener el producto principal
   const response = await fetch(
     `${API_URL}/products?slug=${slug}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
-  
+
   if (!response.ok) {
     throw new Error("No se pudo obtener el producto");
   }
-  
+
   const data = await response.json();
-  
+
   // Verificar si el producto tiene variaciones
   if (data && data.length > 0) {
     const producto = data[0]; // Suponiendo que el producto con ese slug es el primero
@@ -62,12 +59,11 @@ export const getProducto = async (slug) => {
   } else {
     throw new Error("Producto no encontrado");
   }
-}
+};
 
-
-export const getProductosCategoria = async (slug) => {
+export const getProductosCategoria = async (slug,page) => {
   const response = await fetch(
-    `${API_URL}/products?category=${slug}&stock_status=instock&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?category=${slug}&stock_status=instock&page=${page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
     throw new Error("No se pudo obtener los productos de la categoría");
@@ -75,4 +71,4 @@ export const getProductosCategoria = async (slug) => {
 
   const data = await response.json();
   return data;
-}
+};

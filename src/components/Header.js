@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -49,8 +50,22 @@ export default function Header() {
           />
         </Link>
       </div>
-      <div className="md:hidden text-xl font-semibold text-gray-500 bg-pink-200 text-center p-2">
+      <div className="md:hidden bg-pink-100 p-1 flex flex-row gap-2 justify-evenly items-center text-xl font-semibold text-gray-500">
         <Search />
+        <button>
+          <img
+            src="/img/icons/shopping-bag.svg"
+            alt="Carrito de compras"
+            className="w-5 md:w-8 hover:scale-105 hover:opacity-80"
+          />
+        </button>
+        <Link href="/login">
+            <img
+              src="/img/icons/user.svg"
+              alt="Iniciar sesión"
+              className="w-6 hover:scale-105 hover:opacity-80"
+            />
+          </Link>
       </div>
       <nav className="hidden md:flex md:items-center md:justify-center bg-pink-100 p-2">
         <ul className="flex items-center gap-5 text-xl font-semibold">
@@ -69,8 +84,22 @@ export default function Header() {
             </li>
           ))}
         </ul>
-        <div className="text-xl font-semibold text-gray-500 ml-20">
+        <div className="flex flex-row ml-20 gap-5 items-center text-xl font-semibold text-gray-500">
           <Search />
+          <button>
+            <img
+              src="/img/icons/shopping-bag.svg"
+              alt="Carrito de compras"
+              className="w-6 hover:scale-105 hover:opacity-80"
+            />
+          </button>
+          <Link href="/login">
+            <img
+              src="/img/icons/user.svg"
+              alt="Iniciar sesión"
+              className="w-6 hover:scale-105 hover:opacity-80"
+            />
+          </Link>
         </div>
       </nav>
       {isOpenMobileMenu && (

@@ -1,31 +1,27 @@
-import ProductListItem from "@/components/ProductListItem";
+
 import ErrorMessage from "@/components/ErrorMessage";
-import { getProductos } from "@/lib/productos";
 
+import ProductList from "@/components/ProductList";
+import { Suspense } from "react";
+import ProductSkeleton from "@/components/ProductSkeleton";
+import Pagination from "@/components/Pagination";
 
-export default async function Productos({searchParams}) {
+export default async function Productos({ searchParams }) {
   try {
-    
     // Acceder a searchParams de manera segura
     const search = searchParams?.search || "";
-    const productos = await getProductos(search);
-    
-    
+    const page = searchParams?.page || 1;
+
     return (
       <>
-        <h1 className="text-2xl md:text-4xl text-center font-bold text-pink-400 mb-10">
+        <h1 className="text-2xl md:text-4xl text-center font-bold text-primary mb-10">
           Productos Disponibles
         </h1>
-        {productos.length === 0 && (
-          <h2 className="text-xl text-center font-semibold text-gray-500">
-            No se encontraron productos
-          </h2>
-        )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4 p-2">
-          {productos.map((producto) => (
-            <ProductListItem key={producto.id} producto={producto} />
-          ))}
-        </div>
+
+        <Suspense key={search + page} fallback={<ProductSkeleton />}>
+          <ProductList search={search} page={page} />
+        </Suspense>
+        <Pagination page={page} />
       </>
     );
   } catch (error) {

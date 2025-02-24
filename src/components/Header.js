@@ -15,7 +15,8 @@ export default function Header() {
     { href: "/", label: "Inicio" },
     { href: "/tienda/productos", label: "Tienda" },
     { href: "/tienda/categorias", label: "Categorías" },
-    { href: "/contacto", label: "Contacto" },
+    { href: "/tienda/ofertas", label: "Ofertas" },
+    
   ];
   return (
     <header className="mb-10 max-w-[100vw]">

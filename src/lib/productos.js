@@ -13,15 +13,18 @@ export const getProductos = async (search,page) => {
   return data;
 };
 
-export const getSaleProductos = async () => {
+export const getSaleProductos = async (page) => {
+  
   const response = await fetch(
-    `${API_URL}/products?stock_status=instock&on_sale=true&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?on_sale=true&stock_status=instock&page=${page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
-    throw new Error("No se pudo obtener los productos");
+    throw new Error("No se pudo obtener los productos en oferta");
   }
+  
 
   const data = await response.json();
+  
   return data;
 };
 

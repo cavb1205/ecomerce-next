@@ -42,7 +42,7 @@ export default function Header() {
       <div className="flex items-center justify-center">
         <Link href="/">
           <Image
-            src="/img/diva-store-logo.webp"
+            src="/img/diva-store-logo.jpeg"
             alt="Logo diva store"
             className="w-48"
             width={160}

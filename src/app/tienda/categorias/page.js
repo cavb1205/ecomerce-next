@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCategorias } from "@/lib/categorias";
 import ErrorMessage from "@/components/ErrorMessage";
-import Image from "next/image";
+
 
 export default async function Page() {
   try {

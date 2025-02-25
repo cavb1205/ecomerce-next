@@ -1,9 +1,9 @@
 const { API_URL, CONSUMER_KEY, CONSUMER_SECRET } = process.env;
 
 
-export const getCategorias = async () => {
+export const getCategorias = async (per_page=100) => {
     const response = await fetch(
-        `${API_URL}/products/categories?per_page=100&hide_empty=true&orderby=name&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+        `${API_URL}/products/categories?per_page=${per_page}&hide_empty=true&orderby=name&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
     );
     if (!response.ok) {
         throw new Error("No se pudo obtener las categorías");

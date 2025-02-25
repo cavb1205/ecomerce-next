@@ -5,12 +5,20 @@ export default async function CategoryDestacada() {
   const per_page = 20;
   let categorias = await getCategorias(per_page);
   // Mezcla el array de categorías al azar
-  categorias = categorias.sort(() => Math.random() - 0.5);
+  categorias = categorias.filter((categoria)=>categoria.count > 0).sort(() => Math.random() - 0.5);
 
   // Selecciona las primeras 3 categorías
   categorias = categorias.slice(0, 3);
 
-  console.log(categorias);
+  if (!categorias || categorias.length === 0) {
+    return (
+      <div className="flex items-center justify-center">
+        <h2 className="text-2xl text-primary font-semibold">
+          No se encontraron categorías
+        </h2>
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-4xl text-primary font-bold my-4 text-center">

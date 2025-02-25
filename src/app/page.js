@@ -18,9 +18,11 @@ export default async function Home() {
           <ProductList page={page} />
         </div>
         {/* CATEGORIAS */}
-        <Suspense fallback={<ProductSkeleton  />}>
-          <CategoryDestacada />
-        </Suspense>
+        <div className="my-8">
+          <Suspense fallback={<ProductSkeleton />}>
+            <CategoryDestacada />
+          </Suspense>
+        </div>
         {/* OFERTAS */}
         <div className="text-center">
           <h1 className="text-4xl text-primary font-bold">

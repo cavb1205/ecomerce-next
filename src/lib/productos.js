@@ -1,6 +1,6 @@
 const { API_URL, CONSUMER_KEY, CONSUMER_SECRET } = process.env;
 
-export const getProductos = async (search,page) => {
+export const getProductos = async (search='',page) => {
   const response = await fetch(
     `${API_URL}/products?stock_status=instock&search=${search}&page=${page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );

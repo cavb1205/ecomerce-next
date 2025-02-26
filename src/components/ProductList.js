@@ -22,6 +22,7 @@ export default async function ProductList({ search, page, on_sale }) {
     );
   } else {
     const productos = await getProductos(search, page);
+    
     return (
       <>
         {productos.length === 0 && (

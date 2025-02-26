@@ -2,8 +2,7 @@ import { getProducto } from "@/lib/productos";
 import Image from "next/image";
 
 export default async function ProductDetail() {
-
-    const producto = await getProducto()
+  const producto = await getProducto();
   return (
     <section>
       <div className="flex flex-row gap-8 justify-center">
@@ -24,7 +23,7 @@ export default async function ProductDetail() {
           {producto.attributes.length > 0 && (
             <div className="my-4">
               {producto.attributes.map((attribute) => (
-                <div className="my-2">
+                <div key={attribute.id} className="my-2">
                   <h4 className="text-gray-500 font-semibold text-xl mb-2">
                     {attribute.name}:
                   </h4>
@@ -43,8 +42,7 @@ export default async function ProductDetail() {
                 {producto.variaciones
                   .filter((variation) => variation.stock_status === "instock")
                   .map((variation) => (
-                    <option value={variation.id}>
-                      console.log(variation.attributes)
+                    <option key={variation.id} value={variation.id}>
                       {variation.attributes[0]?.option} - ${variation.price}
                     </option>
                   ))}
@@ -63,15 +61,20 @@ export default async function ProductDetail() {
             </h4>
             <div className="flex flex-row items-center gap-4">
               {producto.categories.map((category) => (
-                <span className="p-1 rounded-lg bg-pink-100 text-pink-500">
+                <spa
+                  key={category.id}
+                  className="p-1 rounded-lg bg-pink-100 text-pink-500"
+                >
                   {category.name}
-                </span>
+                </spa>
               ))}
             </div>
           </div>
+          <div className="w-20">
+            {/* <p set:html={producto.description} /> */}
+          </div>
         </div>
       </div>
-      <p set:html={producto.description} />
     </section>
   );
 }

@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { getCategorias } from "../lib/categorias";
+import { getCategorias, getCategoriasConStock } from "../lib/categorias";
 import Link from "next/link";
 export default async function CategoryDestacada() {
-  const per_page = 20;
-  let categorias = await getCategorias(per_page);
+  const per_page = 100;
+  let categorias = await getCategoriasConStock(per_page);
   // Mezcla el array de categorías al azar
-  categorias = categorias.filter((categoria)=>categoria.count > 0).sort(() => Math.random() - 0.5);
+  categorias = categorias.sort(() => Math.random() - 0.5);
 
   // Selecciona las primeras 3 categorías
   categorias = categorias.slice(0, 3);

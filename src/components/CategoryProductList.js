@@ -5,7 +5,7 @@ import { getCategoria } from "@/lib/categorias";
 export default async function CategoryProductList({ slug, page }) {
     
     const categoria = await getCategoria(slug);
-    console.log(categoria);
+    
     const { id, name, count } = categoria[0];
     const productos = await getProductosCategoria(id, page);
     if (!productos || productos.length === 0) {

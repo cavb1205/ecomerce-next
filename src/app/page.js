@@ -15,7 +15,7 @@ export default async function Home() {
         {/* NOVERDADES */}
         <div className="text-center">
           <h1 className="text-4xl text-primary font-bold">Novedades</h1>
-          <ProductList page={page} />
+          <ProductList page={page}  />
         </div>
         {/* CATEGORIAS */}
         <div className="my-8">

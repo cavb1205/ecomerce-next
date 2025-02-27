@@ -29,7 +29,7 @@ export default async function ProductDetail({ params }) {
 
               {/* Precio y Descuento */}
               <div className="mb-6">
-                {producto.on_sale ? (
+                {producto.on_sale && producto.type == "variable" ? (
                   <div className="flex items-center gap-2">
                     <span className="text-gray-500 line-through text-lg">
                       $
@@ -47,7 +47,27 @@ export default async function ProductDetail({ params }) {
                       Oferta
                     </span>
                   </div>
-                ) : (
+                ) : producto.on_sale && producto.type == "simple" ? 
+                (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-500 line-through text-lg">
+                      $
+                      {parseFloat(
+                        producto.regular_price
+                      ).toLocaleString("es-Es")}
+                    </span>
+                    <span className="text-pink-500 text-2xl font-semibold">
+                      $
+                      {parseFloat(
+                        producto.sale_price
+                      ).toLocaleString("es-Es")}
+                    </span>
+                    <span className="bg-primary text-white text-sm font-semibold px-2 py-1 rounded-lg">
+                      Oferta
+                    </span>
+                  </div>
+                )
+                :(
                   <span className="text-secondary text-2xl font-semibold">
                     ${parseFloat(producto.price).toLocaleString("es-Es")}
                   </span>

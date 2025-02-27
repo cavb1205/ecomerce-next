@@ -1,8 +1,8 @@
 const { API_URL, CONSUMER_KEY, CONSUMER_SECRET } = process.env;
 
-export const getProductos = async (search='',page) => {
+export const getProductos = async (search='',page, per_page=10) => {
   const response = await fetch(
-    `${API_URL}/products?stock_status=instock&search=${search}&page=${page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?stock_status=instock&search=${search}&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
     throw new Error("No se pudo obtener los productos");
@@ -13,10 +13,10 @@ export const getProductos = async (search='',page) => {
   return data;
 };
 
-export const getSaleProductos = async (page) => {
+export const getSaleProductos = async (page, per_page=10) => {
   
   const response = await fetch(
-    `${API_URL}/products?on_sale=true&stock_status=instock&page=${page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?on_sale=true&stock_status=instock&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
     throw new Error("No se pudo obtener los productos en oferta");

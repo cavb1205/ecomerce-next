@@ -1,9 +1,9 @@
 import ProductListItem from "./ProductListItem";
 import { getProductos, getSaleProductos } from "@/lib/productos";
 
-export default async function ProductList({ search, page, on_sale }) {
+export default async function ProductList({ search, page, on_sale, per_page }) {
   if (on_sale === true) {
-    const productos = await getSaleProductos(page);
+    const productos = await getSaleProductos(page, per_page);
     return (
       <>
         {productos.length === 0 && (
@@ -21,7 +21,7 @@ export default async function ProductList({ search, page, on_sale }) {
       </>
     );
   } else {
-    const productos = await getProductos(search, page);
+    const productos = await getProductos(search, page, per_page);
     
     return (
       <>

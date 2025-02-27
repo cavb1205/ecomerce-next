@@ -21,7 +21,7 @@ export default async function CategoryDestacada() {
   }
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="text-4xl text-primary font-bold my-4 text-center">
+      <h1 className="text-4xl text-secondary font-bold my-4 text-center">
         Categorías Destacadas
       </h1>
       <div className="flex flex-col md:flex-row gap-4 p-2">

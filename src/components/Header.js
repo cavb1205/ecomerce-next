@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Search from "./Search";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 export default function Header() {
   const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false);
@@ -16,7 +16,6 @@ export default function Header() {
     { href: "/tienda/productos", label: "Tienda" },
     { href: "/tienda/categorias", label: "Categorías" },
     { href: "/tienda/ofertas", label: "Ofertas" },
-    
   ];
   return (
     <header className="mb-10 max-w-[100vw]">
@@ -52,7 +51,10 @@ export default function Header() {
         </Link>
       </div>
       <div className="md:hidden bg-pink-100 p-1 flex flex-row gap-2 justify-evenly items-center text-xl font-semibold text-gray-500">
-        <Search />
+        <Suspense fallback={<span>cargando..</span>}>
+          <Search />{" "}
+        </Suspense>
+
         <button>
           <img
             src="/img/icons/shopping-bag.svg"
@@ -61,12 +63,12 @@ export default function Header() {
           />
         </button>
         <Link href="/login">
-            <img
-              src="/img/icons/user.svg"
-              alt="Iniciar sesión"
-              className="w-6 hover:scale-105 hover:opacity-80"
-            />
-          </Link>
+          <img
+            src="/img/icons/user.svg"
+            alt="Iniciar sesión"
+            className="w-6 hover:scale-105 hover:opacity-80"
+          />
+        </Link>
       </div>
       <nav className="hidden md:flex md:items-center md:justify-center bg-pink-100 p-2">
         <ul className="flex items-center gap-5 text-xl font-semibold">
@@ -86,7 +88,9 @@ export default function Header() {
           ))}
         </ul>
         <div className="flex flex-row ml-20 gap-5 items-center text-xl font-semibold text-gray-500">
-          <Search />
+        <Suspense fallback={<span>cargando..</span>}>
+          <Search />{" "}
+        </Suspense>
           <button>
             <img
               src="/img/icons/shopping-bag.svg"

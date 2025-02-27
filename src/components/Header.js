@@ -98,7 +98,7 @@ export default function Header() {
               className="w-6 hover:scale-105 hover:opacity-80"
             />
           </button>
-          <Link href="/login">
+          <Link href="#">
             <img
               src="/img/icons/user.svg"
               alt="Iniciar sesión"

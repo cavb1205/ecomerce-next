@@ -121,9 +121,9 @@ export default async function ProductDetail({ params }) {
                 <button className="py-3 px-10 rounded-full text-white font-semibold bg-pink-400 hover:bg-pink-500 transition-colors duration-300">
                   Agregar al carrito
                 </button>
-                <button className="py-3 px-10 rounded-full text-pink-500 font-semibold border border-pink-500 hover:bg-pink-50 transition-colors duration-300">
+                {/* <button className="py-3 px-10 rounded-full text-pink-500 font-semibold border border-pink-500 hover:bg-pink-50 transition-colors duration-300">
                   Comprar ahora
-                </button>
+                </button> */}
               </div>
               <div className="my-6">
                 <h4 className="text-gray-500 font-semibold text-xl mb-2">

@@ -5,6 +5,7 @@ import ErrorMessage from "@/components/ErrorMessage";
 import ProductList from "@/components/ProductList";
 import ProductSkeleton from "@/components/ProductSkeleton";
 import { Suspense } from "react";
+import CategorySkeletonHome from "@/components/CategorySkeletonHome";
 
 export default async function Home() {
   try {
@@ -21,7 +22,7 @@ export default async function Home() {
         </div>
         {/* CATEGORIAS */}
         <div className="my-10">
-          <Suspense fallback={<ProductSkeleton />}>
+          <Suspense fallback={<CategorySkeletonHome />}>
             <CategoryDestacada />
           </Suspense>
         </div>

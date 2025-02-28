@@ -1,5 +1,5 @@
 import CategoryDestacada from "@/components/CategoryDestacada";
-import CategoryListSkeleton from "@/components/CategoryListSkeleton";
+import SaleProducts from "@/components/SaleProducts";
 import ErrorMessage from "@/components/ErrorMessage";
 
 import ProductList from "@/components/ProductList";
@@ -26,12 +26,9 @@ export default async function Home() {
           </Suspense>
         </div>
         {/* OFERTAS */}
-        <div className="text-center my-8">
-          <h1 className="text-4xl text-primary font-bold my-4">
-            Productos en Oferta
-          </h1>
-          <ProductList on_sale={true} page={page} per_page={6} />
-        </div>
+       <Suspense fallback={<ProductSkeleton />}>
+          <SaleProducts />
+        </Suspense>
        
       </section>
     );

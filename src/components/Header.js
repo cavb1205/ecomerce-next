@@ -39,7 +39,7 @@ export default function Header() {
         </svg>
       </button>
       <div className="flex items-center justify-center">
-        <Link href="/">
+        
           <Image
             src="/img/diva-store-logo.jpeg"
             alt="Logo diva store"
@@ -48,7 +48,7 @@ export default function Header() {
             height={160}
             priority={true}
           />
-        </Link>
+        
       </div>
       <div className="md:hidden bg-pink-100 p-1 flex flex-row gap-2 justify-evenly items-center text-xl font-semibold text-gray-500">
         <Suspense fallback={<span>cargando..</span>}>

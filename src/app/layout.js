@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -29,6 +30,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
+      <Analytics/>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

@@ -1,7 +1,7 @@
 import MenuCategoryList from "./MenuCategoryList";
-import { getCategoriasConStock } from "@/lib/categorias";
+import { getCategorias } from "@/lib/categorias";
 
 export default async function MenuCategory() {
-  const categorias = await getCategoriasConStock();
+  const categorias = await getCategorias();
   return <MenuCategoryList categorias={categorias} />;
 }

@@ -3,7 +3,8 @@ import { getCategorias, getCategoriasConStock } from "../lib/categorias";
 import Link from "next/link";
 export default async function CategoryDestacada() {
   const per_page = 100;
-  let categorias = await getCategoriasConStock(per_page);
+  // let categorias = await getCategoriasConStock(per_page);
+  let categorias = await getCategorias(per_page);
   // Mezcla el array de categorías al azar
   categorias = categorias.sort(() => Math.random() - 0.5);
 
@@ -25,7 +26,9 @@ export default async function CategoryDestacada() {
         Categorías Destacadas
       </h1>
       <div className="flex flex-col md:flex-row gap-4 p-2">
-        {categorias.map((categoria) => (
+        {categorias
+        .filter((categoria) => categoria.count > 0)
+        .map((categoria) => (
           <div
             key={categoria.id}
             className="hover:shadow-lg transition duration-300 ease-in-out"

@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { getCategoriasConStock } from "@/lib/categorias";
+import { getCategoriasConStock, getCategorias } from "@/lib/categorias";
 import ErrorMessage from "@/components/ErrorMessage";
 
 export default async function Page() {
   try {
-    const categorias = await getCategoriasConStock();
+    // const categorias = await getCategoriasConStock();
+    const categorias = await getCategorias();
 
     return (
       <section className="container mx-auto p-2">

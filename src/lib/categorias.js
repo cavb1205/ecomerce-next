@@ -6,6 +6,9 @@ export const getCategoriasConStock = async (per_page = 100) => {
     const response = await fetch(
       `${API_URL}/products/categories?per_page=${per_page}&hide_empty=true&orderby=name&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
     );
+    if (!response.ok) {
+      return{error:"No se pudo obtener las categorías"};
+    }
 
     // Convertir la respuesta a JSON (usar await aquí)
     const categorias = await response.json();
@@ -16,6 +19,9 @@ export const getCategoriasConStock = async (per_page = 100) => {
         const productosResponse = await fetch(
           `${API_URL}/products?category=${categoria.id}&stock_status=instock&per_page=1&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
         );
+        if (!productosResponse.ok) {
+          return{error:"No se pudo obtener las categorías"};
+        }
 
         // Convertir la respuesta a JSON (usar await aquí)
         const productos = await productosResponse.json();
@@ -32,8 +38,8 @@ export const getCategoriasConStock = async (per_page = 100) => {
 
     return categoriasFiltradas;
   } catch (error) {
-    console.error("Error al obtener categorías con stock:", error);
-    return [];
+    return("Error al obtener categorías con stock:");
+    
   }
 };
 
@@ -42,7 +48,7 @@ export const getCategorias = async (per_page = 100) => {
     `${API_URL}/products/categories?per_page=${per_page}&hide_empty=true&orderby=name&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
-    throw new Error("No se pudo obtener las categorías");
+    return{error:"No se pudo obtener las categorías"};
   }
 
   const data = await response.json();
@@ -54,7 +60,7 @@ export const getCategoria = async (slug) => {
     `${API_URL}/products/categories?slug=${slug}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
-    throw new Error("No se pudo obtener la categoría");
+    return{error:"No se pudo obtener la categoría"};
   }
 
   const data = await response.json();

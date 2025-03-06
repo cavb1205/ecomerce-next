@@ -19,7 +19,7 @@ export default function MenuCategoryList({ categorias }) {
     <>
       {/* Categorías en dispositivos moviles */}
       <div className="md:hidden flex flex-col gap-2 items-center justify-center h-auto mb-4 px-10">
-        <h3 className="text-xl text-primary font-bold m2-4">Categorias</h3>
+        <h3 className="text-xl text-primary font-bold m2-4">Categorías</h3>
         {categorias.error ? (
           <div className="text-secondary font-semibold">{categorias.error}</div>
         ) : (

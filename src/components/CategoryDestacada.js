@@ -38,7 +38,7 @@ export default async function CategoryDestacada() {
                 <Image
                   src={categoria.image.src}
                   alt={categoria.image.alt}
-                  className="w-72 h-72 object-cover"
+                  className="w-60 h-60 object-cover"
                   width={128}
                   height={128}
                 />

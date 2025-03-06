@@ -5,7 +5,7 @@ export const getProductos = async (search='',page, per_page=10) => {
     `${API_URL}/products?stock_status=instock&search=${search}&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
-    throw new Error("No se pudo obtener los productos");
+    return{error:"No se pudo obtener los productos"};
   }
 
   const data = await response.json();
@@ -19,7 +19,7 @@ export const getSaleProductos = async (page, per_page=10) => {
     `${API_URL}/products?on_sale=true&stock_status=instock&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
   );
   if (!response.ok) {
-    throw new Error("No se pudo obtener los productos en oferta");
+    return{error:"No se pudo obtener los productos en oferta"};
   }
   
 
@@ -35,7 +35,7 @@ export const getProducto = async (slug) => {
   );
 
   if (!response.ok) {
-    throw new Error("No se pudo obtener el producto");
+    return{error:"No se pudo obtener el producto"};
   }
 
   const data = await response.json();

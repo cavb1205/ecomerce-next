@@ -9,7 +9,7 @@ export default async function ProductList({ search, page, on_sale, per_page }) {
         {productos.length === 0 && (
           <div className="flex flex-col items-center justify-center h-96">
             <h2 className="text-2xl text-center font-semibold text-gray-500">
-              No se encontraron productos
+              No se encontraron productos en oferta
             </h2>
           </div>
         )}

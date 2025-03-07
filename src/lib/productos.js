@@ -1,41 +1,42 @@
 const { API_URL, CONSUMER_KEY, CONSUMER_SECRET } = process.env;
 
-export const getProductos = async (search='',page, per_page=10) => {
+export const getProductos = async (search = "", page, per_page = 10) => {
   const response = await fetch(
-    `${API_URL}/products?stock_status=instock&search=${search}&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?stock_status=instock&search=${search}&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`,
+    { cache: "no-store" }
   );
   if (!response.ok) {
-    return{error:"No se pudo obtener los productos"};
+    return { error: "No se pudo obtener los productos" };
   }
 
   const data = await response.json();
-   
+
   return data;
 };
 
-export const getSaleProductos = async (page, per_page=10) => {
-  
+export const getSaleProductos = async (page, per_page = 10) => {
   const response = await fetch(
-    `${API_URL}/products?on_sale=true&stock_status=instock&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?on_sale=true&stock_status=instock&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`,
+    { cache: "no-store" }
   );
   if (!response.ok) {
-    return{error:"No se pudo obtener los productos en oferta"};
+    return { error: "No se pudo obtener los productos en oferta" };
   }
-  
 
   const data = await response.json();
-  
+
   return data;
 };
 
 export const getProducto = async (slug) => {
   // Obtener el producto principal
   const response = await fetch(
-    `${API_URL}/products?slug=${slug}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?slug=${slug}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`,
+    { cache: "no-store" }
   );
 
   if (!response.ok) {
-    return{error:"No se pudo obtener el producto"};
+    return { error: "No se pudo obtener el producto" };
   }
 
   const data = await response.json();
@@ -64,9 +65,10 @@ export const getProducto = async (slug) => {
   }
 };
 
-export const getProductosCategoria = async (slug,page) => {
+export const getProductosCategoria = async (slug, page) => {
   const response = await fetch(
-    `${API_URL}/products?category=${slug}&stock_status=instock&page=${page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    `${API_URL}/products?category=${slug}&stock_status=instock&page=${page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`,
+    { cache: "no-store" }
   );
   if (!response.ok) {
     throw new Error("No se pudo obtener los productos de la categoría");

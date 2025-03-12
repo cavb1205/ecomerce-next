@@ -69,7 +69,7 @@ export default function Header() {
             </span>
           )}
         </Link>
-        <Link href="/login">
+        <Link href="/cuenta">
           <img
             src="/img/icons/user.svg"
             alt="Iniciar sesión"
@@ -110,7 +110,7 @@ export default function Header() {
               </span>
             )}
           </Link>
-          <Link href="/">
+          <Link href="/cuenta">
             <img
               src="/img/icons/user.svg"
               alt="Iniciar sesión"

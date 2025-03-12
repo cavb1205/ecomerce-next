@@ -5,11 +5,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Search from "./Search";
 import { Suspense, useState } from "react";
+import { useCart } from "@/lib/CartContext";
 
 export default function Header() {
   const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false);
   const pathname = usePathname();
   const toggleMobileMenu = () => setIsOpenMobileMenu(!isOpenMobileMenu);
+
+  const { cartItems } = useCart();
 
   const links = [
     { href: "/", label: "Inicio" },
@@ -39,29 +42,33 @@ export default function Header() {
         </svg>
       </button>
       <div className="flex items-center justify-center">
-        
-          <Image
-            src="/img/diva-store-logo.jpeg"
-            alt="Logo diva store"
-            className="w-48"
-            width={160}
-            height={160}
-            priority={true}
-          />
-        
+        <Image
+          src="/img/diva-store-logo.jpeg"
+          alt="Logo diva store"
+          className="w-48"
+          width={160}
+          height={160}
+          priority={true}
+        />
       </div>
+      {/* barra de navegación movil */}
       <div className="md:hidden bg-pink-100 p-1 flex flex-row gap-2 justify-evenly items-center text-xl font-semibold text-gray-500">
         <Suspense fallback={<span>cargando..</span>}>
           <Search />{" "}
         </Suspense>
 
-        <button>
+        <Link href="/carrito" className="relative">
           <img
             src="/img/icons/shopping-bag.svg"
             alt="Carrito de compras"
             className="w-5 md:w-8 hover:scale-105 hover:opacity-80"
           />
-        </button>
+          {cartItems.length > 0 && (
+            <span className="text-xs bg-white px-2 py-1 rounded-full text-primary font-semibold absolute -top-3 -right-5">
+              {cartItems.length}
+            </span>
+          )}
+        </Link>
         <Link href="/login">
           <img
             src="/img/icons/user.svg"
@@ -88,16 +95,21 @@ export default function Header() {
           ))}
         </ul>
         <div className="flex flex-row ml-20 gap-5 items-center text-xl font-semibold text-gray-500">
-        <Suspense fallback={<span>cargando..</span>}>
-          <Search />{" "}
-        </Suspense>
-          <button>
+          <Suspense fallback={<span>cargando..</span>}>
+            <Search />{" "}
+          </Suspense>
+          <Link href="/carrito" className="relative">
             <img
               src="/img/icons/shopping-bag.svg"
               alt="Carrito de compras"
               className="w-6 hover:scale-105 hover:opacity-80"
             />
-          </button>
+            {cartItems.length > 0 && (
+              <span className="text-xs bg-white px-2 py-1 rounded-full text-primary font-semibold absolute -top-3 -right-5">
+                {cartItems.length}
+              </span>
+            )}
+          </Link>
           <Link href="/">
             <img
               src="/img/icons/user.svg"

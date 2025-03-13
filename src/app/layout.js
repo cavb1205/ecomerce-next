@@ -1,9 +1,11 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import WhatsApp from "@/components/WhatsApp";
+import { CartProvider } from "@/lib/CartContext";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,8 +18,6 @@ const geistMono = Geist_Mono({
 });
 
 const inter = Inter({
-  
-  
   subsets: ["latin"],
 });
 
@@ -29,16 +29,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es">
-      <Analytics/>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header />
-        {children}
-        <Footer />
-        <WhatsApp />
-      </body>
-    </html>
+    <CartProvider>
+      <html lang="es">
+        <Analytics />
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Header />
+          {children}
+          <Footer />
+          <WhatsApp />
+          <Toaster />
+        </body>
+      </html>
+    </CartProvider>
   );
 }

@@ -1,80 +1,136 @@
-import { getProducto } from "@/lib/productos";
+"use client";
 import Image from "next/image";
+import Link from "next/link";
+import { useCart } from "@/lib/CartContext";
 
-export default async function ProductDetail() {
-  const producto = await getProducto();
+export default function ProductDetail({ producto }) {
+  const { addToCart } = useCart();
+  const handleAddToCart = () => {
+    addToCart(producto);
+  };
+
   return (
-    <section>
-      <div className="flex flex-row gap-8 justify-center">
-        <div>
-          <Image
-            src={producto.images[0].src}
-            alt={producto.name}
-            className="w-96 h-auto object-cover hover:scale-105 hover:opacity-90"
-            width={400}
-            height={400}
-          />
+    <div className="flex flex-col md:flex-row gap-10 justify-center">
+      <div>
+        <Image
+          src={producto.images[0].src}
+          alt={producto.name}
+          className="w-96 h-auto object-cover hover:scale-105 hover:opacity-90 mx-auto"
+          width={400}
+          height={400}
+        />
+      </div>
+      <div className="mx-auto md:mx-0">
+        <h1 className="text-pink-400 text-3xl font-bold">{producto.name}</h1>
+
+        {/* Precio y Descuento */}
+        <div className="mb-6">
+          {producto.on_sale && producto.type == "variable" ? (
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 line-through text-lg">
+                $
+                {parseFloat(
+                  producto.variaciones[0]?.regular_price
+                ).toLocaleString("es-Es")}
+              </span>
+              <span className="text-pink-500 text-2xl font-semibold">
+                $
+                {parseFloat(producto.variaciones[0]?.sale_price).toLocaleString(
+                  "es-Es"
+                )}
+              </span>
+              <span className="bg-primary text-white text-sm font-semibold px-2 py-1 rounded-lg">
+                Oferta
+              </span>
+            </div>
+          ) : producto.on_sale && producto.type == "simple" ? (
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 line-through text-lg">
+                ${parseFloat(producto.regular_price).toLocaleString("es-Es")}
+              </span>
+              <span className="text-pink-500 text-2xl font-semibold">
+                ${parseFloat(producto.sale_price).toLocaleString("es-Es")}
+              </span>
+              <span className="bg-primary text-white text-sm font-semibold px-2 py-1 rounded-lg">
+                Oferta
+              </span>
+            </div>
+          ) : (
+            <span className="text-secondary text-2xl font-semibold">
+              ${parseFloat(producto.price).toLocaleString("es-Es")}
+            </span>
+          )}
         </div>
-        <div>
-          <h1 className="text-pink-400 text-3xl font-bold">{producto.name}</h1>
-          <p className="text-xl font-semibold text-gray-600 my-2">
-            ${parseFloat(producto.price).toLocaleString("es-Es")}{" "}
-          </p>
-          {producto.attributes.length > 0 && (
-            <div className="my-4">
-              {producto.attributes.map((attribute) => (
-                <div key={attribute.id} className="my-2">
-                  <h4 className="text-gray-500 font-semibold text-xl mb-2">
-                    {attribute.name}:
-                  </h4>
-                </div>
-              ))}
+        {producto.type === "simple" ? (
+          <div className="my-4">
+            {producto.attributes.map((attribute) => (
+              <div key={attribute.id} className="my-2">
+                <h4 className="text-gray-500 font-semibold text-xl mb-2">
+                  {attribute.name}:{" "}
+                  <span className="text-pink-500">{attribute.options[0]}</span>
+                </h4>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="my-4">
+            {producto.attributes.map((attribute) => (
+              <div key={attribute.id} className="my-2">
+                <h4 className="text-gray-500 font-semibold text-xl mb-2">
+                  {attribute.name}:
+                </h4>
+              </div>
+            ))}
+          </div>
+        )}
+        {producto.variaciones?.length > 0 && (
+          <div className="my-4">
+            <div className="flex flex-row items-center gap-4">
+              {producto.variaciones
+                .filter((variation) => variation.stock_status === "instock")
+                .map((variation) => (
+                  <button
+                    key={variation.id}
+                    className="p-2 rounded-lg bg-pink-100 text-pink-500 hover:bg-pink-200 hover:text-pink-600 hover:font-semibold"
+                  >
+                    {variation.attributes[0]?.option}
+                  </button>
+                ))}
             </div>
-          )}
-          {producto.variaciones?.length > 0 && (
-            <div className="mt-4">
-              <select
-                id="variations"
-                name="variations"
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option>Selecciona</option>
-                {producto.variaciones
-                  .filter((variation) => variation.stock_status === "instock")
-                  .map((variation) => (
-                    <option key={variation.id} value={variation.id}>
-                      {variation.attributes[0]?.option} - ${variation.price}
-                    </option>
-                  ))}
-              </select>
-            </div>
-          )}
-          {producto.sale_price && (
-            <p>${parseFloat(producto.price).toLocaleString("es-Es")} </p>
-          )}
-          <button className="py-3 px-10 rounded-full text-white font-semibold bg-pink-400">
+          </div>
+        )}
+
+        {/* Botones de Acción */}
+        <div className="flex gap-4 mt-6">
+          <button onClick={handleAddToCart} className="py-3 px-10 rounded-full text-white font-semibold bg-pink-400 hover:bg-pink-500 transition-colors duration-300">
             Agregar al carrito
           </button>
-          <div className="my-6">
-            <h4 className="text-gray-500 font-semibold text-xl mb-2">
-              Categorías:
-            </h4>
-            <div className="flex flex-row items-center gap-4">
-              {producto.categories.map((category) => (
-                <spa
-                  key={category.id}
-                  className="p-1 rounded-lg bg-pink-100 text-pink-500"
-                >
+        </div>
+        <div className="my-6">
+          <h4 className="text-gray-500 font-semibold text-xl mb-2">
+            Categorías:
+          </h4>
+          <div className="flex flex-row items-center gap-4">
+            {producto.categories.map((category) => (
+              <Link
+                href={`/tienda/categorias/${category.slug}`}
+                key={category.id}
+              >
+                <span className="p-1 rounded-lg bg-pink-100 text-pink-500 hover:bg-pink-200 hover:text-pink-400">
                   {category.name}
-                </spa>
-              ))}
-            </div>
-          </div>
-          <div className="w-20">
-            {/* <p set:html={producto.description} /> */}
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
+        <div className="flex flex-col my-10 max-w-sm">
+          <h4 className="text-pink-400 text-xl font-semibold">Descripción:</h4>
+          <div
+            className="text-gray-600 prose"
+            dangerouslySetInnerHTML={{ __html: producto.description }}
+          />
+        </div>
       </div>
-    </section>
+    </div>
   );
 }

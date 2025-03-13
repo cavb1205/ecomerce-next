@@ -77,3 +77,27 @@ export const getProductosCategoria = async (slug, page) => {
   const data = await response.json();
   return data;
 };
+
+
+
+export const createClient = async (userData) => {
+  console.log('ingresa a la funcion')
+  console.log(userData)
+const response = await fetch(
+  `https://divastore.rosapastell.com/wp-json/wc/v3/customers?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  }
+);
+
+  if (!response.ok) {
+      return { error: "No se pudo crear el cliente" };
+  }
+const data = await response.json();
+console.log(data)
+return data;
+};

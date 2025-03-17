@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import RegisterClient from "@/components/RegisterClient";
 
-// import { login } from "../lib/clientes";
+
+import { login } from "@/lib/clientes";
+
 export default function Login() {
   const router = useRouter();
   const [userData, setUserData] = useState({
@@ -11,12 +12,12 @@ export default function Login() {
     password: "",
   });
   const [error, setError] = useState("");
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -26,10 +27,10 @@ export default function Login() {
     }
     const data = await login(userData);
     if (data.code) {
-      setError(data.message);
+      setError("Usuario o contraseña incorrectos");
       return;
     }
-    router.push("/");
+    
   };
 
   return (
@@ -39,7 +40,7 @@ export default function Login() {
           Iniciar sesión
         </h2>
         {error && (
-          <p className="bg-red-500/80 rounded-lg p-2 my-2 text-white font-semibold">
+          <p className="bg-red-600/80 rounded-lg p-2 my-2 text-white font-semibold text-sm">
             {error}
           </p>
         )}
@@ -75,7 +76,10 @@ export default function Login() {
           </button>
         </form>
       </div>
-      <button onClick={()=>router.push("/registro")} className="text-secondary font-semibold text-center cursor-pointer block border rounded-md border-secondary w-4/12 mx-auto p-2 my-5 hover:bg-secondary hover:text-white">
+      <button
+        onClick={() => router.push("/registro")}
+        className="text-secondary font-semibold text-center cursor-pointer block border rounded-md border-secondary w-4/12 mx-auto p-2 my-5 hover:bg-secondary hover:text-white"
+      >
         Registrarse
       </button>
     </section>

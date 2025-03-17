@@ -1,5 +1,6 @@
 const { API_URL, CONSUMER_KEY, CONSUMER_SECRET } = process.env;
 
+
 export const getProductos = async (search = "", page, per_page = 10) => {
   const response = await fetch(
     `${API_URL}/products?stock_status=instock&search=${search}&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`,
@@ -15,6 +16,7 @@ export const getProductos = async (search = "", page, per_page = 10) => {
 };
 
 export const getSaleProductos = async (page, per_page = 10) => {
+  
   const response = await fetch(
     `${API_URL}/products?on_sale=true&stock_status=instock&page=${page}&per_page=${per_page}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`,
     { cache: "no-store" }
@@ -30,6 +32,7 @@ export const getSaleProductos = async (page, per_page = 10) => {
 
 export const getProducto = async (slug) => {
   // Obtener el producto principal
+  
   const response = await fetch(
     `${API_URL}/products?slug=${slug}&consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`,
     { cache: "no-store" }
@@ -80,24 +83,3 @@ export const getProductosCategoria = async (slug, page) => {
 
 
 
-export const createClient = async (userData) => {
-  console.log('ingresa a la funcion')
-  console.log(userData)
-const response = await fetch(
-  `https://divastore.rosapastell.com/wp-json/wc/v3/customers?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`,
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  }
-);
-
-  if (!response.ok) {
-      return { error: "No se pudo crear el cliente" };
-  }
-const data = await response.json();
-console.log(data)
-return data;
-};

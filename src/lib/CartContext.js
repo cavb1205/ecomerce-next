@@ -1,6 +1,8 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
+
 import { toast } from "sonner";
+import { getClient } from "./clientes";
 
 // Crear el contexto
 const CartContext = createContext();
@@ -10,11 +12,18 @@ export const useCart = () => useContext(CartContext);
 
 // Crear el proveedor del carrito
 export const CartProvider = ({ children }) => {
+  //estados del cliente
+  const [cliente, setCliente] = useState(null);
+  const [token, setToken] = useState(null);
+
+
+  // Estado del carrito
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Cargar los productos del carrito desde localStorage al montar el componente
   useEffect(() => {
+    
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartItems(storedCart);
     setLoading(false);
@@ -53,7 +62,7 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, clearCart }}
+      value={{ cartItems, addToCart, removeFromCart, clearCart, cliente, token }}
     >
       {children}
     </CartContext.Provider>

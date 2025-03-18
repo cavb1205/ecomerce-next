@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 export default function Cart() {
   const { cartItems, removeFromCart, clearCart } = useCart();
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <section className="container mx-auto h-fit  my-14 p-6">
@@ -27,7 +27,7 @@ export default function Cart() {
           <div className="col-span-2">
             {cartItems.map((item) => (
               <div
-              onClick={() => router.push(`/tienda/productos/${item.slug}`)}
+                onClick={() => router.push(`/tienda/productos/${item.slug}`)}
                 key={item.id}
                 className="grid grid-cols-3 justify-items-start items-center gap-2 my-4 bg-pink-100/40 rounded-lg p-4"
               >
@@ -55,7 +55,7 @@ export default function Cart() {
             <p className="text-center text-secondary font-semibold text-xl mb-5">
               Resumen de compra
             </p>
-            
+
             <div className="flex flex-row justify-between w-full">
               <p className="text-primary font-bold text-lg mx-auto">Total:</p>
               <p className="text-primary font-bold text-lg mx-auto">
@@ -66,7 +66,7 @@ export default function Cart() {
               </p>
             </div>
             <hr className="w-full border-secondary my-4" />
-            <button className="bg-primary text-xl block mx-auto text-white font-semibold py-2 px-5 rounded-md hover:opacity-70 hover:scale-105 cursor-pointer">
+            <button onClick={()=>router.push("/checkout")} className="bg-primary text-xl block mx-auto text-white font-semibold py-2 px-5 rounded-md hover:opacity-70 hover:scale-105 cursor-pointer">
               <span>Finalizar compra</span>
             </button>
             <button

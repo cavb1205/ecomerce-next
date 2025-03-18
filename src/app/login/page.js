@@ -1,17 +1,28 @@
 "use client";
-import { useState } from "react";
+import { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useCart } from "@/lib/CartContext";
 
 
-import { login } from "@/lib/clientes";
+
+// import { login } from "@/lib/clientes";
 
 export default function Login() {
+  const { login, cliente } = useCart();
   const router = useRouter();
   const [userData, setUserData] = useState({
     username: "",
     password: "",
   });
   const [error, setError] = useState("");
+
+
+  useEffect(() => {
+    if (cliente) {
+      router.push("/cuenta");
+    }
+  }
+  , []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

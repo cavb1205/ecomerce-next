@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { getClient } from "../../lib/clientes";
 import { useRouter } from "next/navigation";
+import { useCart } from "@/lib/CartContext";
 
 export default function Cuenta() {
   const [token, setToken] = useState(null);
@@ -12,7 +13,12 @@ export default function Cuenta() {
   const [pedidos, setPedidos] = useState(false);
   const [ordes, setOrders] = useState([]);
   const [direccion, setDireccion] = useState(false);
+
   const router = useRouter();
+  const { user } = useCart();
+  console.log(cliente)
+
+  console.log("user cuenta context", user);
 
   const Skeleton = () => (
     <div className="animate-pulse space-y-4">
@@ -25,28 +31,39 @@ export default function Cuenta() {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token") || null;
+    const storedId = localStorage.getItem("user") || null;
+
     if (!storedToken) {
       // Si no hay token, redirige a login
       router.push("/login");
       return;
     }
-
+ 
     setToken(storedToken);
+    
 
     const fetchClient = async () => {
       try {
-        const user = await getClient(storedToken);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/customers/${storedId}?consumer_key=${process.env.NEXT_PUBLIC_CONSUMER_KEY}&consumer_secret=${process.env.NEXT_PUBLIC_CONSUMER_SECRET}`,
 
-        if (user?.code) {
+          {
+            method: "GET",
+          }
+        );
+        const data = await res.json();
+        console.log("getclient cliente......", data);
+        
+
+        if (data?.code) {
           // Si hay un código de error en el usuario (por ejemplo, 401 - no autorizado), redirige
           router.push("/login");
           return;
         }
 
         // Si todo está bien, se actualiza el estado del cliente
-        setCliente(user);
+        setCliente(data);
         setLoading(false);
-        console.log("user", user);
       } catch (error) {
         console.error("Error fetching client data:", error);
         // En caso de un error al obtener los datos del cliente, redirige al login
@@ -59,6 +76,7 @@ export default function Cuenta() {
 
   const handleCloseSession = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     router.push("/login");
   };
 
@@ -169,7 +187,6 @@ export default function Cuenta() {
               <div className="animate-pulse space-y-4">
                 <div className="h-4 bg-gray-300 rounded w-1/2"></div>
                 <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                
               </div>
             ) : ordes.length > 0 ? (
               ordes.map((order, index) => (

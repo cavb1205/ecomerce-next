@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
+
 export const createClient = async (userData) => {
   const authHeader =
     "Basic " +
@@ -28,33 +29,22 @@ export const createClient = async (userData) => {
   return data;
 };
 
-export const getClient = async (token) => {
-  console.log("ingresa a get client");
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_WORDPRESS}/users/me`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  const data = await response.json();
-
-  if (data.id) {
+export const getClient = async (id) => {
+    
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/customers/${data.id}?consumer_key=${process.env.NEXT_PUBLIC_CONSUMER_KEY}&consumer_secret=${process.env.NEXT_PUBLIC_CONSUMER_SECRET}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/customers/${id}?consumer_key=${process.env.NEXT_PUBLIC_CONSUMER_KEY}&consumer_secret=${process.env.NEXT_PUBLIC_CONSUMER_SECRET}`,
 
       {
         method: "GET",
       }
     );
-    const cliente = await res.json();
-    console.log("getclient cliente", cliente);
-    return cliente;
-  }
-};
+    const data = await res.json();
+    console.log("getclient cliente......", cliente);
+    return data;
+ 
+  
+}
+
 
 export const orders = async (clienteId) => {
   const response = await fetch(
@@ -68,29 +58,4 @@ export const orders = async (clienteId) => {
   return data;
 };
 
-export const login = async (userData) => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/wp-json/jwt-auth/v1/token`,
 
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    }
-  );
-
-  const data = await response.json();
-
-  if (data.code) {
-    return data;
-  }
-  if (data.token) {
-    localStorage.setItem("token", data.token);
-    toast.success("Inicio de sesión exitoso");
-
-    redirect("/");
-    return data;
-  }
-};

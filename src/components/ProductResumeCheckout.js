@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ShipingMethod from "./ShipingMethod";
+import Payments from "./Payments";
 export default function ProductResumeCheckout({ cartItems }) {
   const shippingCost = {
     calama: 2000,
@@ -70,6 +71,7 @@ export default function ProductResumeCheckout({ cartItems }) {
             selectedShipping={selectedShipping}
             handleShippingChange={handleShippingChange}
           />
+          <Payments />
         </div>
       )}
     </>

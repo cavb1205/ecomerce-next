@@ -17,7 +17,7 @@ export default function ShipingMethod({
             value="tienda"
             defaultChecked={selectedShipping === "tienda"}
           />
-          <label htmlFor="tienda" className="text-secondary text-sm">
+          <label htmlFor="tienda" className="text-secondary text-md">
             Recoger en tienda (Calama)
           </label>
         </div>
@@ -30,7 +30,7 @@ export default function ShipingMethod({
             value="calama"
             defaultChecked={selectedShipping === "calama"}
           />
-          <label htmlFor="calama" className="text-secondary text-sm">
+          <label htmlFor="calama" className="text-secondary text-md">
             Envío a domicilio (solo Calama)
           </label>
         </div>
@@ -43,7 +43,7 @@ export default function ShipingMethod({
             value="chile"
             defaultChecked={selectedShipping === "chile"}
           />
-          <label htmlFor="chile" className="text-secondary text-sm">
+          <label htmlFor="chile" className="text-secondary text-md">
             Envío ciudades de Chile
           </label>
         </div>

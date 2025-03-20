@@ -6,8 +6,6 @@ export default function Payments() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  console.log(selectedPayment);
-
   useEffect(() => {
     const fetchPayments = async () => {
       const res = await fetch(
@@ -20,7 +18,7 @@ export default function Payments() {
       if (data.code) {
         setError();
       }
-      console.log(data);
+
       setPaymentMethod(data);
       setLoading(false);
     };
@@ -59,7 +57,9 @@ export default function Payments() {
                   <label htmlFor={method.id}>{method.title}</label>
                 </div>
                 {selectedPayment === method.id && (
-                  <span className="text-xs text-secondary">{method.description}</span>
+                  <span className="text-xs text-secondary">
+                    {method.description}
+                  </span>
                 )}
               </div>
             ))}

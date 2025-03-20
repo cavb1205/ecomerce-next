@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getClient } from "@/lib/clientes";
+
 import { useCart } from "@/lib/CartContext";
 import FormCheckout from "@/components/FormCheckout";
 import ProductResumeCheckout from "@/components/ProductResumeCheckout";
-import { Ship } from "lucide-react";
+
 import ShipingMethod from "@/components/ShipingMethod";
 export default function Checkout() {
-  const { cartItems, removeFromCart, clearCart } = useCart();
+  const { cartItems } = useCart();
   const [cliente, setCliente] = useState({
     first_name: "",
     last_name: "",

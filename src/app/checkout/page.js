@@ -7,35 +7,101 @@ import FormCheckout from "@/components/FormCheckout";
 import ProductResumeCheckout from "@/components/ProductResumeCheckout";
 
 import ShipingMethod from "@/components/ShipingMethod";
+import SkeletonCheckout from "@/components/SkeletonCheckout";
+import Payments from "@/components/Payments";
 export default function Checkout() {
   const { cartItems } = useCart();
-  const [cliente, setCliente] = useState({
-    first_name: "",
-    last_name: "",
-    company: "N/A",
-    email: "",
-    phone: "",
-    address_1: "",
-    address_2: "",
-    city: "",
-    state: "",
-    country: "CL",
-    postcode: "",
-  });
-  const [loading, setLoading] = useState(true);
- 
-
   const router = useRouter();
 
-  const Skeleton = () => (
-    <div className="animate-pulse space-y-4">
-      <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-      <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-      <div className="h-4 bg-gray-300 rounded w-2/3"></div>
-      <div className="h-4 bg-gray-300 rounded w-1/3"></div>
-    </div>
-  );
+  const [selectedShipping, setSelectedShipping] = useState("calama");
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [cliente, setCliente] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  const shippingCost = {
+    calama: 2000,
+    chile: 10000,
+    tienda: 0,
+  };
+
+  const [order, setOrder] = useState({
+    payment_method: paymentMethod?.id,
+    payment_method_title: paymentMethod?.title,
+    set_paid: false,
+    customer_id: cliente?.id,
+    billing: {
+      first_name: "",
+      last_name: "",
+      company: "N/A",
+      email: "",
+      phone: "",
+      address_1: "",
+      address_2: "",
+      city: "",
+      state: "",
+      country: "CL",
+      postcode: "",
+    },
+    shipping: {
+      first_name: "",
+      last_name: "",
+      company: "N/A",
+      address_1: "",
+      address_2: "",
+      city: "",
+      state: "",
+      country: "CL",
+      postcode: "",
+    },
+    line_items: cartItems.map((item) =>
+      item.variaciones
+        ? {
+            product_id: item.id,
+            variation_id: item.variaciones[0]?.id,
+            quantity: item.quantity,
+          }
+        : {
+            product_id: item.id,
+            quantity: item.quantity,
+          }
+    ),
+    shipping_lines: [
+      {
+        method_id: selectedShipping,
+        method_title: "Envío",
+        total: shippingCost[selectedShipping],
+      },
+    ],
+
+  });
+
+  
+  // Función para manejar la selección del método de envío
+  const handleShippingChange = (event) => {
+    setSelectedShipping(event.target.value);
+    setOrder({
+      ...order,
+      shipping_lines: [
+        {
+          method_id: event.target.value,
+          method_title: "Envío",
+          total: shippingCost[event.target.value],
+        },
+      ],
+    });
+  };
+
+  const handleSelectedPayment = (selectedPayment) => {
+    setPaymentMethod(selectedPayment);
+    setOrder({
+      ...order,
+      payment_method: selectedPayment?.id,
+      payment_method_title: selectedPayment?.title,
+    });
+
+    console.log("Método de pago seleccionado: ", selectedPayment);
+  };
+  
   const handleChanges = (e) => {
     setCliente({
       ...cliente,
@@ -43,8 +109,8 @@ export default function Checkout() {
     });
   };
 
-  console.log("cliente", cliente);
-
+  console.log("order de compra", order);
+  
   useEffect(() => {
     const storedToken = localStorage.getItem("token") || null;
     const storedUser = localStorage.getItem("user") || null;
@@ -85,7 +151,7 @@ export default function Checkout() {
   if (loading) {
     return (
       <div className="container mx-auto h-fit  my-14 p-6">
-        <Skeleton />
+        <SkeletonCheckout />
       </div>
     );
   }
@@ -106,8 +172,16 @@ export default function Checkout() {
           <h4 className="text-primary text-2xl font-semibold mb-2">
             Tu pedido
           </h4>
-          <ProductResumeCheckout cartItems={cartItems} />
-          
+          <ProductResumeCheckout
+            cartItems={cartItems}
+            selectedShipping={selectedShipping}
+            shippingCost={shippingCost}
+          />
+          <ShipingMethod
+            selectedShipping={selectedShipping}
+            handleShippingChange={handleShippingChange}
+          />
+          <Payments onPaymentChange={handleSelectedPayment} />
         </div>
       </div>
     </section>

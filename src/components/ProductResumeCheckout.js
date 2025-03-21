@@ -1,19 +1,8 @@
 import React, { useState } from "react";
 import ShipingMethod from "./ShipingMethod";
 import Payments from "./Payments";
-export default function ProductResumeCheckout({ cartItems }) {
-  const shippingCost = {
-    calama: 2000,
-    chile: 10000,
-    tienda: 0,
-  };
-
-  const [selectedShipping, setSelectedShipping] = useState("calama");
-
-  // Función para manejar la selección del método de envío
-  const handleShippingChange = (event) => {
-    setSelectedShipping(event.target.value);
-  };
+export default function ProductResumeCheckout({ cartItems, shippingCost, selectedShipping }) {
+ 
   return (
     <>
       {cartItems.length === 0 ? (
@@ -78,11 +67,8 @@ export default function ProductResumeCheckout({ cartItems }) {
               ).toLocaleString("es-ES")}
             </p>
           </div>
-          <ShipingMethod
-            selectedShipping={selectedShipping}
-            handleShippingChange={handleShippingChange}
-          />
-          <Payments />
+         
+          
         </div>
       )}
     </>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-export default function Payments() {
+export default function Payments({ onPaymentChange }) {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [error, setError] = useState(false);
@@ -25,10 +25,24 @@ export default function Payments() {
     fetchPayments();
   }, []);
 
+  // Función para manejar la selección de pago
   const handlePaymentChange = (event) => {
-    setSelectedPayment(event.target.value);
+    const selected = paymentMethod.find(
+      (method) => method.id === event.target.value
+    );
+
+    setSelectedPayment(selected);
+    onPaymentChange(selected); // Llamamos a la función pasada desde el padre
   };
-  if (loading) return <p>Cargando...</p>;
+
+  if (loading)
+    return (
+      <div className="animate-pulse flex flex-col gap-2 my-6 p-2">
+        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+      </div>
+    );
   return (
     <div className="my-6">
       <h1 className="text-secondary font-semibold">Métodos de pago</h1>
@@ -51,12 +65,12 @@ export default function Payments() {
                     id={method.id}
                     name="payment"
                     value={method.id}
-                    checked={selectedPayment === method.id}
+                    checked={selectedPayment?.id === method.id}
                     onChange={handlePaymentChange}
                   />
                   <label htmlFor={method.id}>{method.title}</label>
                 </div>
-                {selectedPayment === method.id && (
+                {selectedPayment?.id === method.id && (
                   <span className="text-xs text-secondary">
                     {method.description}
                   </span>

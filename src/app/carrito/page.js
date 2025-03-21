@@ -8,6 +8,8 @@ export default function Cart() {
   const { cartItems, removeFromCart, clearCart } = useCart();
   const router = useRouter();
 
+  console.log("Carrito:", cartItems);
+
   return (
     <section className="container mx-auto h-fit  my-14 p-6">
       <h1 className="text-4xl text-primary text-center font-bold my-6">
@@ -27,8 +29,8 @@ export default function Cart() {
           <div className="col-span-2">
             {cartItems.map((item) => (
               <div
-                onClick={() => router.push(`/tienda/productos/${item.slug}`)}
-                key={item.id}
+                
+                key={item.type == "simple"?item.id:item.variaciones[0].id}
                 className="grid grid-cols-3 justify-items-start items-center gap-2 my-4 bg-pink-100/40 rounded-lg p-4"
               >
                 <Image
@@ -38,14 +40,22 @@ export default function Cart() {
                   width={40}
                   height={40}
                 />
-                <div className="flex flex-col justify-start gap-2">
+                <div className="flex flex-col justify-start gap-2" onClick={() => router.push(`/tienda/productos/${item.slug}`)}>
                   <span className="">{item.name}</span>
+                  {item.variaciones && (
+                  <span className="text-secondary text-sm">
+                    {item.variaciones[0]?.attributes[0].name}: {item.variaciones[0]?.attributes[0].option}
+                  </span>
+                  )}
+                  <span className="text-secondary text-sm">
+                    Cantidad: {item.quantity}
+                  </span>
                   <span className="text-primary text-sm font-semibold">
                     ${parseFloat(item.price).toLocaleString("es-ES")}
                   </span>
                 </div>
                 <Trash2
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => removeFromCart(item.type == "simple"?item.id:item.variaciones[0].id)}
                   className="cursor-pointer min-w-sm text-primary hover:scale-105 mx-auto"
                 />
               </div>
@@ -61,7 +71,7 @@ export default function Cart() {
               <p className="text-primary font-bold text-lg mx-auto">
                 $
                 {cartItems
-                  .reduce((acc, item) => acc + parseFloat(item.price), 0)
+                  .reduce((acc, item) => acc + parseFloat(item.price * item.quantity), 0)
                   .toLocaleString("es-ES")}
               </p>
             </div>

@@ -1,12 +1,54 @@
 "use client";
+import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
+import { toast } from "sonner";
 
 export default function ProductDetail({ producto }) {
+  const [selectedVariation, setSelectedVariation] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  console.log("cantidad seleccionada:", quantity);
+  console.log("variacion seleccionada:", selectedVariation);
+  console.log("producto completo:", producto);
   const { addToCart } = useCart();
   const handleAddToCart = () => {
-    addToCart(producto);
+    const productWhitQuantity = {
+      ...producto,
+      quantity,
+    };
+    if (producto.type === "variable") {
+      if (!selectedVariation) {
+        toast.info("Debes seleccionar una variación");
+        return;
+      }
+      productWhitQuantity.variaciones = [selectedVariation];
+      addToCart(productWhitQuantity);
+      return;
+    }
+    addToCart(productWhitQuantity);
+  };
+
+  const handleQuantity = (e) => {
+    if (e.target.value == 0 || e.target.value == " ") {
+      toast.info("La cantidad mínima es 1");
+      setQuantity(1);
+    }
+    else if (
+      (e.target.value <= selectedVariation?.stock_quantity &&
+        e.target.value > 0) ||
+      (e.target.value <= producto.stock_quantity && e.target.value > 0)
+    ) {
+      setQuantity(parseInt(e.target.value));
+    }
+    else if (
+      e.target.value > selectedVariation?.stock_quantity ||
+      e.target.value > producto.stock_quantity
+    ) {
+      toast.info(`No hay suficiente stock`);
+      setQuantity(selectedVariation?.stock_quantity || producto.stock_quantity);
+    }
   };
 
   return (
@@ -83,6 +125,7 @@ export default function ProductDetail({ producto }) {
             ))}
           </div>
         )}
+
         {producto.variaciones?.length > 0 && (
           <div className="my-4">
             <div className="flex flex-row items-center gap-4">
@@ -90,19 +133,50 @@ export default function ProductDetail({ producto }) {
                 .filter((variation) => variation.stock_status === "instock")
                 .map((variation) => (
                   <button
+                    onClick={() => setSelectedVariation(variation)}
                     key={variation.id}
-                    className="p-2 rounded-lg bg-pink-100 text-pink-500 hover:bg-pink-200 hover:text-pink-600 hover:font-semibold"
+                    className={`${
+                      variation.id == selectedVariation?.id
+                        ? "p-2 rounded-lg bg-primary text-white font-semibold"
+                        : "p-2 rounded-lg bg-pink-100 text-pink-500 hover:bg-pink-200 hover:text-pink-600 hover:font-semibold"
+                    }`}
                   >
                     {variation.attributes[0]?.option}
                   </button>
                 ))}
             </div>
+            
           </div>
         )}
+        {selectedVariation ? (
+              <span className="text-green-600 text-sm">
+                Disponibles: {selectedVariation.stock_quantity }
+              </span>
+            ):
+            producto.type === "simple"?
+            <span className="text-green-600 text-sm">
+                Disponibles: {producto.stock_quantity }
+            </span>
+            :null
+            }
+        <div className="my-4">
+          <h4 className="text-gray-500 font-semibold text-md mb-2">
+            Cantidad:
+          </h4>
+          <input
+            type="number"
+            value={quantity}
+            onChange={handleQuantity}
+            className="p-1 rounded-lg border border-gray-300 w-20"
+          />
+        </div>
 
         {/* Botones de Acción */}
         <div className="flex gap-4 mt-6">
-          <button onClick={handleAddToCart} className="py-3 px-10 rounded-full text-white font-semibold bg-pink-400 hover:bg-pink-500 transition-colors duration-300">
+          <button
+            onClick={handleAddToCart}
+            className="py-3 px-10 rounded-full text-white font-semibold bg-pink-400 hover:bg-pink-500 transition-colors duration-300"
+          >
             Agregar al carrito
           </button>
         </div>

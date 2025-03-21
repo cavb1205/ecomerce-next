@@ -69,7 +69,7 @@ export const CartProvider = ({ children }) => {
 
   // Agregar al carrito
   const addToCart = (product) => {
-    if (cartItems.some((item) => item.id === product.id)) {
+    if (cartItems.some((item) => item.type == "simple" && item.id === product.id)) {
       toast.error("El producto ya está en el carrito");
       return;
     }
@@ -84,7 +84,7 @@ export const CartProvider = ({ children }) => {
   // Eliminar del carrito
   const removeFromCart = (productId) => {
     setCartItems((prevItems) => {
-      const newItems = prevItems.filter((item) => item.id !== productId);
+      const newItems = prevItems.filter((item) => item.type=="simple"? item.id !== productId: item.variaciones[0].id !== productId);
       localStorage.setItem("cart", JSON.stringify(newItems));
       toast.error("Producto eliminado del carrito");
       return newItems;

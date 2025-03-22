@@ -9,26 +9,30 @@ import ProductResumeCheckout from "@/components/ProductResumeCheckout";
 import ShipingMethod from "@/components/ShipingMethod";
 import SkeletonCheckout from "@/components/SkeletonCheckout";
 import Payments from "@/components/Payments";
+import { toast } from "sonner";
 export default function Checkout() {
-  const { cartItems } = useCart();
+  // const { cartItems } = useCart();
   const router = useRouter();
+  const storedUser = localStorage.getItem("user") || null;
+  const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 
   const [selectedShipping, setSelectedShipping] = useState("calama");
   const [paymentMethod, setPaymentMethod] = useState(null);
-  const [cliente, setCliente] = useState(null);
+  const [cliente, setCliente] = useState(parseInt(storedUser) || 0);
   const [loading, setLoading] = useState(true);
 
   const shippingCost = {
-    calama: 2000,
-    chile: 10000,
-    tienda: 0,
+    calama: "2000",
+    chile: "10000",
+    tienda: "0",
   };
 
   const [order, setOrder] = useState({
     payment_method: paymentMethod?.id,
     payment_method_title: paymentMethod?.title,
     set_paid: false,
-    customer_id: cliente?.id,
+    customer_id: cliente,
+    customer_note: "",
     billing: {
       first_name: "",
       last_name: "",
@@ -69,13 +73,11 @@ export default function Checkout() {
       {
         method_id: selectedShipping,
         method_title: "Envío",
-        total: shippingCost[selectedShipping],
+        total: shippingCost[selectedShipping].toString(),
       },
     ],
-
   });
 
-  
   // Función para manejar la selección del método de envío
   const handleShippingChange = (event) => {
     setSelectedShipping(event.target.value);
@@ -98,19 +100,56 @@ export default function Checkout() {
       payment_method: selectedPayment?.id,
       payment_method_title: selectedPayment?.title,
     });
-
-    console.log("Método de pago seleccionado: ", selectedPayment);
   };
-  
+
   const handleChanges = (e) => {
-    setCliente({
-      ...cliente,
-      [e.target.name]: e.target.value,
+    setOrder({
+      ...order,
+      customer_note: e.target.value,
+      billing: {
+        ...order.billing,
+        [e.target.name]: e.target.value,
+      },
+      shipping: {
+        ...order.shipping,
+        [e.target.name]: e.target.value,
+      },
     });
   };
 
-  console.log("order de compra", order);
-  
+  const handleSubmit = async () => {
+    setLoading(true);
+    if (order.billing.email === "" || order.billing.phone === "") {
+      toast.error("Debes ingresar un correo y un teléfono");
+      setLoading(false);
+      return;
+    }
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/orders?consumer_key=${process.env.NEXT_PUBLIC_CONSUMER_KEY}&consumer_secret=${process.env.NEXT_PUBLIC_CONSUMER_SECRET}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(order),
+      }
+    );
+
+    const data = await response.json();
+    console.log("data", data);
+
+    if (data.code) {
+      setLoading(false);
+      toast.error("Error al realizar el pedido");
+      return data;
+    }
+    if (data.id) {
+      localStorage.removeItem("cart");
+      router.push("/order/" + data.id);
+    }
+  }
+  console.log("orden final", order);
+
   useEffect(() => {
     const storedToken = localStorage.getItem("token") || null;
     const storedUser = localStorage.getItem("user") || null;
@@ -166,7 +205,11 @@ export default function Checkout() {
           <h4 className="text-secondary text-xl font-semibold mb-4">
             Detalles de envío
           </h4>
-          <FormCheckout cliente={cliente} handleChanges={handleChanges} />
+          <FormCheckout
+            cliente={cliente}
+            handleChanges={handleChanges}
+            order={order}
+          />
         </div>
         <div className="bg-pink-100/40 rounded-lg p-4">
           <h4 className="text-primary text-2xl font-semibold mb-2">
@@ -182,6 +225,14 @@ export default function Checkout() {
             handleShippingChange={handleShippingChange}
           />
           <Payments onPaymentChange={handleSelectedPayment} />
+          <button
+            onClick={handleSubmit}
+            disabled={loading
+            }
+            className="w-full bg-primary text-white font-bold p-4 text-xl rounded-lg mt-4 hover:opacity-90 hover:scale-105 transition-all"
+          >
+            Realizar pedido
+          </button>
         </div>
       </div>
     </section>

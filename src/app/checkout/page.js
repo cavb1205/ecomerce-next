@@ -165,14 +165,13 @@ export default function Checkout() {
       localStorage.removeItem("cart");
       setLoading(false);
       toast.success("Pedido realizado con éxito");
-      router.push("/order/" + data.id);
+      router.push("/orden/" + data.id);
     }
   }
   console.log("orden final", order);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token") || null;
-    const storedUser = localStorage.getItem("user") || null;
+    
 
     const fetchClient = async () => {
       try {
@@ -205,6 +204,7 @@ export default function Checkout() {
     if (storedUser && storedToken) {
       fetchClient();
     }
+    setLoading(false);
   }, []); // Solo s
 
   if (loading) {

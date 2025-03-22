@@ -46,7 +46,7 @@ export default function Login() {
 
   return (
     <section className="container mx-auto h-fit  my-14 p-6">
-      <div className="register-form w-4/12 mx-auto">
+      <div className="register-form w-full md:w-4/12 mx-auto">
         <h2 className=" text-primary font-bold text-4xl text-center">
           Iniciar sesión
         </h2>
@@ -89,7 +89,7 @@ export default function Login() {
       </div>
       <button
         onClick={() => router.push("/registro")}
-        className="text-secondary font-semibold text-center cursor-pointer block border rounded-md border-secondary w-4/12 mx-auto p-2 my-5 hover:bg-secondary hover:text-white"
+        className="text-secondary font-semibold text-center cursor-pointer block border rounded-md border-secondary w-full md:w-4/12 mx-auto p-2 my-5 hover:bg-secondary hover:text-white"
       >
         Registrarse
       </button>

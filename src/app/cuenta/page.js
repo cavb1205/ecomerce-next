@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { getClient } from "../../lib/clientes";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/CartContext";
+import Link from "next/link";
 
 export default function Cuenta() {
   const [token, setToken] = useState(null);
@@ -16,7 +17,7 @@ export default function Cuenta() {
 
   const router = useRouter();
   const { user } = useCart();
-  console.log(cliente)
+  console.log(cliente);
 
   console.log("user cuenta context", user);
 
@@ -38,9 +39,8 @@ export default function Cuenta() {
       router.push("/login");
       return;
     }
- 
+
     setToken(storedToken);
-    
 
     const fetchClient = async () => {
       try {
@@ -53,7 +53,6 @@ export default function Cuenta() {
         );
         const data = await res.json();
         console.log("getclient cliente......", data);
-        
 
         if (data?.code) {
           // Si hay un código de error en el usuario (por ejemplo, 401 - no autorizado), redirige
@@ -198,9 +197,11 @@ export default function Cuenta() {
                     <span className="font-semibold">Total</span>
                   </div>
                   <div className="grid grid-cols-4 gap-2 text-xs md:text-lg">
-                    <span className="text-primary font-bold">
-                      {order.number}
-                    </span>{" "}
+                    <Link href={`/orden/${order.id}`}>
+                      <span className="text-primary font-bold">
+                        {order.number}
+                      </span>{" "}
+                    </Link>
                     <span className="text-secondary font-medium">
                       {new Date(order.date_created).toLocaleDateString("es-ES")}
                     </span>{" "}

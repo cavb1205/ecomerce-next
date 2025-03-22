@@ -124,6 +124,24 @@ export default function Checkout() {
       setLoading(false);
       return;
     }
+    if (!order.billing.first_name || !order.billing.last_name || !order.billing.address_1 || !order.billing.city || !order.billing.postcode) {
+      toast.error("Todos los campos de dirección son obligatorios.");
+      setLoading(false);
+      return;
+    }
+  
+    if (!order.shipping.first_name || !order.shipping.last_name || !order.shipping.address_1 || !order.shipping.city || !order.shipping.postcode) {
+      toast.error("Todos los campos de envío son obligatorios.");
+      setLoading(false);
+      return;
+    }
+  
+    // Verificar si se ha seleccionado un método de pago
+    if (!order.payment_method || !order.payment_method_title) {
+      toast.error("Debes seleccionar un método de pago.");
+      setLoading(false);
+      return;
+    }
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/orders?consumer_key=${process.env.NEXT_PUBLIC_CONSUMER_KEY}&consumer_secret=${process.env.NEXT_PUBLIC_CONSUMER_SECRET}`,
       {
@@ -145,6 +163,8 @@ export default function Checkout() {
     }
     if (data.id) {
       localStorage.removeItem("cart");
+      setLoading(false);
+      toast.success("Pedido realizado con éxito");
       router.push("/order/" + data.id);
     }
   }

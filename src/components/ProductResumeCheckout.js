@@ -63,7 +63,7 @@ export default function ProductResumeCheckout({ cartItems, shippingCost, selecte
                 cartItems.reduce(
                   (acc, item) => acc + parseFloat(item.price * item.quantity),
                   0
-                ) + shippingCost?.[selectedShipping]
+                ) + parseInt(shippingCost?.[selectedShipping])
               ).toLocaleString("es-ES")}
             </p>
           </div>

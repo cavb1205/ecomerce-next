@@ -14,6 +14,10 @@ export default function ProductDetail({ producto }) {
   console.log("producto completo:", producto);
   const { addToCart } = useCart();
   const handleAddToCart = () => {
+    if (quantity === "" || quantity === 0) {
+      toast.info("La cantidad mínima es 1");
+      return;
+    }
     const productWhitQuantity = {
       ...producto,
       quantity,
@@ -31,18 +35,24 @@ export default function ProductDetail({ producto }) {
   };
 
   const handleQuantity = (e) => {
-    if (e.target.value == 0 || e.target.value == " ") {
+    if (producto.type === "variable" && !selectedVariation) {
+      toast.info("Debes seleccionar una variación");
+      return;
+    }
+    // Si el campo está vacío o es un valor no numérico, no hacer nada
+    if (e.target.value === "" || isNaN(e.target.value)) {
+      setQuantity(e.target.value);
+    }
+    if (e.target.value === 0) {
       toast.info("La cantidad mínima es 1");
       setQuantity(1);
-    }
-    else if (
+    } else if (
       (e.target.value <= selectedVariation?.stock_quantity &&
         e.target.value > 0) ||
       (e.target.value <= producto.stock_quantity && e.target.value > 0)
     ) {
       setQuantity(parseInt(e.target.value));
-    }
-    else if (
+    } else if (
       e.target.value > selectedVariation?.stock_quantity ||
       e.target.value > producto.stock_quantity
     ) {
@@ -145,20 +155,17 @@ export default function ProductDetail({ producto }) {
                   </button>
                 ))}
             </div>
-            
           </div>
         )}
         {selectedVariation ? (
-              <span className="text-green-600 text-sm">
-                Disponibles: {selectedVariation.stock_quantity }
-              </span>
-            ):
-            producto.type === "simple"?
-            <span className="text-green-600 text-sm">
-                Disponibles: {producto.stock_quantity }
-            </span>
-            :null
-            }
+          <span className="text-green-600 text-sm">
+            Disponibles: {selectedVariation.stock_quantity}
+          </span>
+        ) : producto.type === "simple" ? (
+          <span className="text-green-600 text-sm">
+            Disponibles: {producto.stock_quantity}
+          </span>
+        ) : null}
         <div className="my-4">
           <h4 className="text-gray-500 font-semibold text-md mb-2">
             Cantidad:

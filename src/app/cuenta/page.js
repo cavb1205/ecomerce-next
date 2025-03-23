@@ -188,15 +188,18 @@ export default function Cuenta() {
                 <div className="h-4 bg-gray-300 rounded w-1/2"></div>
               </div>
             ) : ordes.length > 0 ? (
-              ordes.map((order, index) => (
-                <div key={order.id}>
-                  <div className="grid grid-cols-4 gap-2 text-secondary font-bold text-sm md:text-lg">
-                    <span className="font-semibold"># Orden</span>{" "}
-                    <span className="font-semibold">Fecha</span>{" "}
-                    <span className="font-semibold">Estado</span>
-                    <span className="font-semibold">Total</span>
-                  </div>
-                  <div className="grid grid-cols-4 gap-2 text-xs md:text-lg">
+              <div>
+                <div className="grid grid-cols-4 gap-2 text-secondary font-bold text-sm md:text-lg">
+                  <span className="font-semibold"># Orden</span>{" "}
+                  <span className="font-semibold">Fecha</span>{" "}
+                  <span className="font-semibold">Estado</span>
+                  <span className="font-semibold">Total</span>
+                </div>
+                {ordes.map((order, index) => (
+                  <div
+                    key={order.id}
+                    className="grid grid-cols-4 gap-2 text-xs md:text-lg"
+                  >
                     <Link href={`/orden/${order.id}`}>
                       <span className="text-primary font-bold">
                         {order.number}
@@ -205,15 +208,15 @@ export default function Cuenta() {
                     <span className="text-secondary font-medium">
                       {new Date(order.date_created).toLocaleDateString("es-ES")}
                     </span>{" "}
-                    <span className="text-secondary font-medium">
+                    <span className={`${order.status==="completed"? "text-green-600 font-semibold":"text-secondary font-semibold"}`}>
                       {order.status}
                     </span>
                     <span className="text-secondary font-medium">
                       {parseFloat(order.total).toLocaleString("es-ES")}
                     </span>
                   </div>
-                </div>
-              ))
+                ))}
+              </div>
             ) : (
               <p className="text-secondary font-semibold">No hay pedidos</p>
             )}

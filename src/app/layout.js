@@ -45,11 +45,13 @@ export default function RootLayout({ children }) {
           <meta name="twitter:title" content={metadata.title} />
           <meta name="twitter:description" content={metadata.description} />
           <meta name="twitter:image" content={metadata.image} />
-          
 
           <link rel="icon" href="/favicon.ico" sizes="any" />
 
-
+          <meta
+            name="google-site-verification"
+            content="eaKT9g-8YWSOZ9p5g1iWnZk9w4M6j3kJS-nuuK8HM8s"
+          />
         </head>
 
         <body

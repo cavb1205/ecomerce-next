@@ -17,7 +17,7 @@ export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [cliente, setCliente] = useState(0);
   const [loading, setLoading] = useState(true);
-  // const [cartItems, setCartItems] = useState([]);
+  
 
   const { cartItems, setCartItems } = useCart();
 

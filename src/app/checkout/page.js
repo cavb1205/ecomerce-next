@@ -80,7 +80,9 @@ export default function Checkout() {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user") || 0;
+    const storedToken = localStorage.getItem("token") || null;
     const storeItems = JSON.parse(localStorage.getItem("cart")) || [];
+
     setOrder(
       {
         ...order,

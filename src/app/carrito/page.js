@@ -8,7 +8,7 @@ export default function Cart() {
   const { cartItems, removeFromCart, clearCart } = useCart();
   const router = useRouter();
 
-  console.log("Carrito:", cartItems);
+  
 
   return (
     <section className="container mx-auto h-fit  my-14 p-6">

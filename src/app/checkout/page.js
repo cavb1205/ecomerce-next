@@ -19,7 +19,7 @@ export default function Checkout() {
   const [loading, setLoading] = useState(true);
   // const [cartItems, setCartItems] = useState([]);
 
-  const {cartItems} = useCart();
+  const { cartItems, setCartItems } = useCart();
 
   const shippingCost = {
     calama: "2000",
@@ -101,7 +101,7 @@ export default function Checkout() {
         ),
       },
       []
-    )
+    );
 
     const fetchClient = async () => {
       try {
@@ -135,9 +135,7 @@ export default function Checkout() {
       fetchClient();
     }
     setLoading(false);
-  }, []); 
-
-  
+  }, []);
 
   // Función para manejar la selección del método de envío
   const handleShippingChange = (event) => {
@@ -227,7 +225,6 @@ export default function Checkout() {
     );
 
     const data = await response.json();
-    console.log("data", data);
 
     if (data.code) {
       setLoading(false);
@@ -236,14 +233,12 @@ export default function Checkout() {
     }
     if (data.id) {
       localStorage.removeItem("cart");
+      setCartItems([]);
       setLoading(false);
       toast.success("Pedido realizado con éxito");
       router.push("/orden/" + data.id);
     }
   };
-  console.log("orden final", order);
-
-  
 
   if (loading) {
     return (

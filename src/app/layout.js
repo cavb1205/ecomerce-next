@@ -45,6 +45,11 @@ export default function RootLayout({ children }) {
           <meta name="twitter:title" content={metadata.title} />
           <meta name="twitter:description" content={metadata.description} />
           <meta name="twitter:image" content={metadata.image} />
+          
+
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+
+
         </head>
 
         <body

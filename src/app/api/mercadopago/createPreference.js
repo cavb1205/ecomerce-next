@@ -42,6 +42,7 @@ export default async function createPreference(order) {
 
 export async function Pagos(id) {
   console.log("id de la funcion pagosss", id);
+  try{
   const payment = await new Payment(client).get({ id });
   console.log("obtenemos el pago", payment);
 
@@ -60,4 +61,9 @@ export async function Pagos(id) {
     console.log("actualizado", actualizado);
     return actualizado;
   }
+}
+    catch (error) {
+        console.log("Error al obtener el pago", error);
+        return null;
+    }
 }

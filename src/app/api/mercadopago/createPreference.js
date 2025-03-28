@@ -44,9 +44,12 @@ export async function Pagos(id) {
   console.log("id de la funcion pagosss", id);
   const payment = await new Payment(client).get({ id });
 
+
   console.log("payment", payment);
   if (payment.status === "approved") {
+    console.log("payment approved");
     const orderId = payment.metadata.order_id;
+    console.log("orderId", orderId);
 
     const order = await getOrden(orderId);
     const updateOrder = {
@@ -54,7 +57,9 @@ export async function Pagos(id) {
       status: "processing",
       transaction_id: payment.id.toString(),
     };
-
+    console.log("updateOrder", updateOrder);
     const actualizado = await putOrden(orderId, updateOrder);
+    console.log("actualizado", actualizado);
+    return actualizado;
   }
 }

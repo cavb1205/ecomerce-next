@@ -2,7 +2,7 @@ import { putOrden, getOrden } from "@/lib/ordenes";
 import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
 
 const client = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN_TEST,
+  accessToken: process.env.MP_ACCESS_TOKEN,
 });
 
 export default async function createPreference(order) {
@@ -43,15 +43,13 @@ export default async function createPreference(order) {
 export async function Pagos(id) {
   console.log("id de la funcion pagosss", id);
   const payment = await new Payment(client).get({ id });
+  console.log("obtenemos el pago", payment);
 
-
-  console.log("payment", payment);
   if (payment.status === "approved") {
-    console.log("payment approved");
+    console.log("if payment approved");
     const orderId = payment.metadata.order_id;
     console.log("orderId", orderId);
 
-    const order = await getOrden(orderId);
     const updateOrder = {
       id: orderId,
       status: "processing",

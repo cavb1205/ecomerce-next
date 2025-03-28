@@ -43,7 +43,7 @@ export default async function createPreference(order) {
 export async function Pagos(id) {
   console.log("id de la funcion pagosss", id);
   try {
-    const payment = await new Payment(client).get({ id });
+    const payment = await new Payment(client).get( id );
     console.log("obtenemos el pago");
     console.log("Resultado de payment:", JSON.stringify(payment, null, 2));
     // Mapeo de estados de Mercado Pago a WooCommerce

@@ -1,10 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import MercadoPago from "./MercadoPago";
+import BotonMercadoPago from "./BotonMercadoPago";
 export default function Payments({ onPaymentChange }) {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  console.log("metodo de pago = ", selectedPayment);
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -68,7 +71,13 @@ export default function Payments({ onPaymentChange }) {
                     checked={selectedPayment?.id === method.id}
                     onChange={handlePaymentChange}
                   />
-                  <label htmlFor={method.id}>{method.title}</label>
+                  <label htmlFor={method.id}>
+                    {method.id === "woo-mercado-pago-basic" ? (
+                      <BotonMercadoPago />
+                    ) : (
+                      method.title
+                    )}
+                  </label>
                 </div>
                 {selectedPayment?.id === method.id && (
                   <span className="text-xs text-secondary">

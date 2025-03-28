@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useCart } from "@/lib/CartContext";
 
 import FormCheckout from "@/components/FormCheckout";
@@ -10,6 +10,9 @@ import ShipingMethod from "@/components/ShipingMethod";
 import SkeletonCheckout from "@/components/SkeletonCheckout";
 import Payments from "@/components/Payments";
 import { toast } from "sonner";
+
+import createPreference from "../api/mercadopago/createPreference";
+
 export default function Checkout() {
   const router = useRouter();
 
@@ -17,7 +20,6 @@ export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [cliente, setCliente] = useState(0);
   const [loading, setLoading] = useState(true);
-  
 
   const { cartItems, setCartItems } = useCart();
 
@@ -225,6 +227,7 @@ export default function Checkout() {
     );
 
     const data = await response.json();
+    console.log("respuesta de la creacion del pedido", data);
 
     if (data.code) {
       setLoading(false);
@@ -232,6 +235,13 @@ export default function Checkout() {
       return data;
     }
     if (data.id) {
+      if (data.payment_method === "woo-mercado-pago-basic") {
+        toast.info("Redirigiendo a Mercado Pago");
+        router.push("/orden/" + data.id+"/payment");
+        localStorage.removeItem("cart");
+        setCartItems([]);
+        return;
+      }
       localStorage.removeItem("cart");
       setCartItems([]);
       setLoading(false);
@@ -277,6 +287,7 @@ export default function Checkout() {
             selectedShipping={selectedShipping}
             handleShippingChange={handleShippingChange}
           />
+
           <Payments onPaymentChange={handleSelectedPayment} />
           <button
             onClick={handleSubmit}

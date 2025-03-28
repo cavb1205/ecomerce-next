@@ -42,29 +42,46 @@ export default async function createPreference(order) {
 
 export async function Pagos(id) {
   console.log("id de la funcion pagosss", id);
-  try{
-  const payment = await new Payment(client).get({ id });
-  console.log("obtenemos el pago");
-  console.log("Resultado de payment:", JSON.stringify(payment, null, 2)); 
-
-  if (payment.status === "approved") {
-    console.log("if payment approved");
-    const orderId = payment.metadata.order_id;
-    console.log("orderId", orderId);
-
-    const updateOrder = {
-      id: orderId,
-      status: "processing",
-      transaction_id: payment.id.toString(),
+  try {
+    const payment = await new Payment(client).get({ id });
+    console.log("obtenemos el pago");
+    console.log("Resultado de payment:", JSON.stringify(payment, null, 2));
+    // Mapeo de estados de Mercado Pago a WooCommerce
+    const woocommerceStatusMap = {
+      approved: "processing", // Pago aprobado y acreditado: procesando pedido.
+      pending: "pending", // Pago pendiente: pedido en espera.
+      authorized: "on-hold", // Pago autorizado pero no capturado.
+      in_process: "on-hold", // Pago en revisión: pedido en espera.
+      in_mediation: "on-hold", // Pago en disputa: pedido en espera.
+      rejected: "failed", // Pago rechazado: pedido fallido.
+      cancelled: "cancelled", // Pago cancelado: pedido cancelado.
+      refunded: "refunded", // Pago reembolsado: pedido reembolsado.
+      charged_back: "refunded", // Contracargo: consideramos reembolsado también.
     };
-    console.log("updateOrder", updateOrder);
-    const actualizado = await putOrden(orderId, updateOrder);
-    console.log("actualizado", actualizado);
-    return actualizado;
-  }
-}
-    catch (error) {
-        console.log("Error al obtener el pago", error);
-        return null;
+    const woocommerceStatus = woocommerceStatusMap[payment.status];
+    console.log(`Estado mapeado a WooCommerce: ${woocommerceStatus}`);
+
+    if (woocommerceStatus) {
+      const orderId = payment.metadata.order_id;
+      console.log("orderId:", orderId);
+
+      const updateOrder = {
+        id: orderId,
+        status: woocommerceStatus, // Estado mapeado
+        transaction_id: payment.id.toString(),
+      };
+
+      console.log("Datos de actualización de la orden:", updateOrder);
+      const actualizado = await putOrden(orderId, updateOrder);
+      console.log("Orden actualizada en WooCommerce:", actualizado);
+      return actualizado;
+    } else {
+      console.log(
+        "Estado no reconocido en WooCommerce. No se realizará ninguna actualización."
+      );
     }
+  } catch (error) {
+    console.log("Error al obtener el pago", error);
+    return null;
+  }
 }

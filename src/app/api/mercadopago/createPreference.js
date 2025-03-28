@@ -44,7 +44,8 @@ export async function Pagos(id) {
   console.log("id de la funcion pagosss", id);
   try{
   const payment = await new Payment(client).get({ id });
-  console.log("obtenemos el pago", payment);
+  console.log("obtenemos el pago");
+  console.log("Resultado de payment:", JSON.stringify(payment, null, 2)); 
 
   if (payment.status === "approved") {
     console.log("if payment approved");

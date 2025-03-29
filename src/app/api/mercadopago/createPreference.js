@@ -77,7 +77,7 @@ export async function Pagos(id) {
 
       console.log("Datos de actualización de la orden:", updateOrder);
       const actualizado = await putOrden(orderId, updateOrder);
-      //   console.log("Orden actualizada en WooCommerce:", actualizado);
+      console.log("Orden actualizada en WooCommerce:", actualizado);
       return actualizado;
     } else {
       console.log(

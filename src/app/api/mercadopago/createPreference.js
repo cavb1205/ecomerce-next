@@ -68,14 +68,14 @@ export async function Pagos(id) {
     if (woocommerceStatus) {
       const orderId = payment.metadata.order_id;
       //   console.log("orderId:", orderId);
-
+    console.log("id de la orden de tipo", typeof(orderId));
       const updateOrder = {
         id: orderId,
         status: woocommerceStatus, // Estado mapeado
         transaction_id: payment.id.toString(),
       };
 
-      console.log("Datos de actualización de la orden:", updateOrder);
+      console.log("Datos para la actualización de la orden:", updateOrder);
       const actualizado = await putOrden(orderId, updateOrder);
       console.log("Orden actualizada en WooCommerce:", actualizado);
       return actualizado;

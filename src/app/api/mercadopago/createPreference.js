@@ -2,7 +2,7 @@ import { putOrden, getOrden } from "@/lib/ordenes";
 import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
 
 const client = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN_TEST,
+  accessToken: process.env.MP_ACCESS_TOKEN,
 });
 
 export default async function createPreference(order) {

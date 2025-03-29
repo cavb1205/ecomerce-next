@@ -42,13 +42,14 @@ export default async function createPreference(order) {
 
 export async function Pagos(id) {
   console.log("id de la funcion pagosss", id);
-  id = parseInt(id);
+
   console.log("tipo de dato id", typeof id);
 
   try {
-    const payment = await new Payment(client).get({'id': id});
+    const payment = await new Payment(client).get({ id: id });
+    console.log("payment response", payment);
     console.log("obtenemos el pago");
-    console.log("Resultado de payment:", JSON.stringify(payment, null, 2));
+
     // Mapeo de estados de Mercado Pago a WooCommerce
     const woocommerceStatusMap = {
       approved: "processing", // Pago aprobado y acreditado: procesando pedido.
@@ -66,7 +67,7 @@ export async function Pagos(id) {
 
     if (woocommerceStatus) {
       const orderId = payment.metadata.order_id;
-      console.log("orderId:", orderId);
+      //   console.log("orderId:", orderId);
 
       const updateOrder = {
         id: orderId,
@@ -76,7 +77,7 @@ export async function Pagos(id) {
 
       console.log("Datos de actualización de la orden:", updateOrder);
       const actualizado = await putOrden(orderId, updateOrder);
-      console.log("Orden actualizada en WooCommerce:", actualizado);
+      //   console.log("Orden actualizada en WooCommerce:", actualizado);
       return actualizado;
     } else {
       console.log(

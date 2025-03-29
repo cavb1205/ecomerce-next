@@ -42,37 +42,49 @@ export default async function createPreference(order) {
 
 export async function Pagos(id) {
   console.log("id de la funcion pagosss", id);
-
+  if (typeof id !== "string") {
+    id = id.toString(); // Conversión segura
+  }
   console.log("tipo de dato id", typeof id);
 
   try {
     const payment = await new Payment(client).get({ id: id });
+    // Verificar estructura crítica
+    if (!payment || !payment.status || !payment.metadata) {
+      throw new Error("Respuesta de pago inválida");
+    }
     console.log("payment response", payment);
     console.log("obtenemos el pago");
 
     // Mapeo de estados de Mercado Pago a WooCommerce
     const woocommerceStatusMap = {
-      approved: "processing", // Pago aprobado y acreditado: procesando pedido.
-      pending: "pending", // Pago pendiente: pedido en espera.
-      authorized: "on-hold", // Pago autorizado pero no capturado.
-      in_process: "on-hold", // Pago en revisión: pedido en espera.
-      in_mediation: "on-hold", // Pago en disputa: pedido en espera.
-      rejected: "failed", // Pago rechazado: pedido fallido.
-      cancelled: "cancelled", // Pago cancelado: pedido cancelado.
-      refunded: "refunded", // Pago reembolsado: pedido reembolsado.
-      charged_back: "refunded", // Contracargo: consideramos reembolsado también.
+      approved: "processing",
+      pending: "pending",
+      authorized: "on-hold",
+      in_process: "on-hold",
+      in_mediation: "on-hold",
+      rejected: "failed",
+      cancelled: "cancelled",
+      refunded: "refunded",
+      charged_back: "refunded",
+
+      default: "pending",
     };
-    const woocommerceStatus = woocommerceStatusMap[payment.status];
+    const woocommerceStatus =
+      woocommerceStatusMap[payment.status] || woocommerceStatusMap.default;
     console.log(`Estado mapeado a WooCommerce: ${woocommerceStatus}`);
 
     if (woocommerceStatus) {
       const orderId = payment.metadata.order_id;
       //   console.log("orderId:", orderId);
-    console.log("id de la orden de tipo", typeof(orderId));
+      console.log("id de la orden de tipo", typeof orderId);
       const updateOrder = {
-        id: orderId,
         status: woocommerceStatus, // Estado mapeado
         transaction_id: payment.id.toString(),
+        meta_data: [{
+            key: "mercado_pago_id",
+            value: payment.id
+          }]
       };
 
       console.log("Datos para la actualización de la orden:", updateOrder);

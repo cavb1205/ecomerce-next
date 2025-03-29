@@ -1,9 +1,12 @@
+import OrderStatus from "@/components/OrderStatus";
 import { getOrden } from "@/lib/ordenes";
 
 export default async function OrderDetail({ params }) {
   const { id } = await params;
 
   const order = await getOrden(id);
+console.log("order", order);
+  
 
   return (
     <div className="container mx-auto h-fit  my-6 p-6">
@@ -13,9 +16,9 @@ export default async function OrderDetail({ params }) {
       <p className="text-md md:text-lg text-secondary">
         El pedido{" "}
         <span className="text-primary font-semibold">#{order.id}</span> se
-        realizó el {order.date_created} y se encuentra{" "}
-        <span className="text-primary font-semibold">{order.status}</span>{" "}
+        realizó el {order.date_created}
       </p>
+      <OrderStatus status={order.status} />
 
       <div className="bg-pink-100/40 rounded-lg p-4 my-4 flex flex-col gap-2">
         <div className="grid grid-cols-2 md:grid-cols-2 gap-4  w-full mx-auto mb-4">
@@ -71,6 +74,16 @@ export default async function OrderDetail({ params }) {
             {order.payment_method_title}
           </h3>
         </div>
+        {order.transaction_id && (
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-4  w-full mx-auto">
+            <h3 className="text-sm md:text-base text-secondary font-semibold">
+              ID de transacción
+            </h3>
+            <h3 className="text-sm md:text-base text-secondary font-semibold">
+              {order.transaction_id}
+            </h3>
+          </div>
+        )}
       </div>
       <div className="w-full mx-auto my-4 bg-pink-100/40 rounded-lg p-4">
         <h3 className="text-lg text-primary font-semibold text-center">
